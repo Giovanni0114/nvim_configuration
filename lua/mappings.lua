@@ -41,5 +41,6 @@ vim.keymap.set("v", ">", ">gv")
 vim.keymap.set("v", "<", "<gv")
 
 vim.keymap.set("n", "<A-c>", "<cmd>bdelete<CR>")
-
+vim.keymap.set("n", "<A-.>", "<cmd>bnext<CR>")
+vim.keymap.set("n", "<A-,>", "<cmd>bprevious<CR>")
 
