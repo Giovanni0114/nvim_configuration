@@ -17,6 +17,7 @@ vim.opt.showmode = false
 --  See `:help 'clipboard'`
 vim.opt.clipboard = 'unnamedplus'
 vim.cmd [[:set number]]
+vim.cmd [[:set path+=**]]
 
 -- Enable break indent
 vim.opt.breakindent = true
@@ -40,6 +41,7 @@ vim.opt.splitright = true
 vim.opt.splitbelow = true
 
 vim.opt.shiftwidth = 4
+vim.opt.tabstop = 4
 vim.opt.expandtab = true
 
 -- Sets how neovim will display certain whitespace in the editor.
@@ -55,12 +57,15 @@ vim.opt.inccommand = 'split'
 vim.opt.cursorline = true
 
 -- Minimal number of screen lines to keep above and below the cursor.
-vim.opt.scrolloff = 10
+vim.opt.scrolloff = 6
 
 -- [[ Basic Keymaps ]]
 --  See `:help vim.keymap.set()`
+require 'mappings'
 
 -- Set highlight on search, but clear on pressing <Esc> in normal mode
 vim.opt.hlsearch = true
 
 vim.cmd [[nnoremap # <Cmd>let @/='\<'.expand('<cword>').'\>'<bar>set hlsearch<CR>]]
+
+vim.o.termguicolors = true

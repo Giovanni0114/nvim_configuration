@@ -1,5 +1,4 @@
 require 'opts'
-require 'mappings'
 
 -- [[ Basic Autocommands ]]
 --  See `:help lua-guide-autocommands`
@@ -35,6 +34,7 @@ vim.opt.rtp:prepend(lazypath)
 --    :Lazy update
 --
 -- NOTE: Here is where you install your plugins.
+
 require('lazy').setup {
   -- 'tpope/vim-sleuth', -- Detect tabstop and shiftwidth automatically
 
@@ -87,6 +87,7 @@ require('lazy').setup {
     event = 'VimEnter',
     branch = '0.1.x',
     dependencies = {
+      'nvim-telescope/telescope-symbols.nvim',
       'nvim-lua/plenary.nvim',
       { -- If encountering errors, see telescope-fzf-native README for install instructions
         'nvim-telescope/telescope-fzf-native.nvim',
@@ -134,11 +135,11 @@ require('lazy').setup {
         -- You can put your default mappings / updates / etc. in here
         --  All the info you're looking for is in `:help telescope.setup()`
         --
-        -- defaults = {
-        --   mappings = {
-        --     i = { ['<c-enter>'] = 'to_fuzzy_refine' },
-        --   },
-        -- },
+        defaults = {
+          mappings = {
+            i = { ['<c-enter>'] = 'to_fuzzy_refine' },
+          },
+        },
         -- pickers = {}
         extensions = {
           ['ui-select'] = {
@@ -251,7 +252,7 @@ require('lazy').setup {
       local servers = {
         clangd = {
           filetypes = { 'c', 'cpp', 'objc', 'objcpp', 'cuda', 'proto' },
-          cmd = Clang_CMD
+          cmd = Clang_CMD,
         },
         -- gopls = {},
         pyright = {},
@@ -341,7 +342,7 @@ require('lazy').setup {
         command = 'clang-format',
         args = { '-assume-filename', '$FILENAME', '-style=.clang-format' },
         range_args = function(self, ctx)
-          local util = require("conform.util")
+          local util = require 'conform.util'
           local start_offset, end_offset = util.get_offsets_from_range(ctx.buf, ctx.range)
           local length = end_offset - start_offset
           return {
