@@ -7,22 +7,26 @@ local function readFromFile(filePath)
     file:close()
     return string.sub(content, 1, -2)
 end
-
+Toolchain = ""
 -- Read from the file
-local toolchain = readFromFile("./.toolchain")
+Toolchain = readFromFile("./.toolchain")
 if os.getenv("TOOLCHAIN") ~= nil then
-    toolchain = os.getenv("TOOLCHAIN")
+    Toolchain = os.getenv("TOOLCHAIN")
 end
 
+if Toolchain ~= "" then
+    Toolchain = string.upper(Toolchain or "")
+    print("selected "..Toolchain.." toolchain")
+end
 local paths = {
     ["VMMB2"] =
     '--query-driver=/home/giovanni/ASD/toolchain/vmmb2/sysroots/x86_64-podsdk-linux/usr/bin/*podos*/*podos-linux-g*',
     ["VMMB3"] =
     '--query-driver=/home/giovanni/ASD/toolchain/vmmb3/sysroots/x86_64-podsdk-linux/usr/bin/*podos*/*podos-linux-g*',
-    ["x86_64"] =
+    ["X86_64"] =
     '--query-driver=/home/giovanni/ASD/toolchain/genericx86-64/sysroots/x86_64-podsdk-linux/usr/bin/*podos*/*podos-linux-g*',
 }
 
-Clang_CMD = { 'clangd', '--clang-tidy', '--offset-encoding=utf-16', '-header-insertion=never', paths[toolchain] or nil }
+Clang_CMD = { 'clangd', '--clang-tidy', '--offset-encoding=utf-16', '-header-insertion=never', paths[Toolchain] or nil }
 
 require("main")

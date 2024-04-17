@@ -41,6 +41,8 @@ vim.keymap.set("n", "<leader>rb", "<cmd>lua require('gitsigns').reset_buffer()<C
 vim.keymap.set("n", "<leader>sd", "<cmd>lua require('gitsigns').toggle_deleted()<CR>", { desc = "Show deleted" })
 vim.keymap.set("n", "<leader>gb", "<cmd>lua require('gitsigns').blame_line()<CR>", { desc = "Show deleted" })
 
+vim.keymap.set("n", "<leader>bt", "<cmd>BlameToggle virtual<CR>", { desc = "Git Balme Toggle (virtual)" })
+
 -- Moving indents [gv - select previous visual selection]
 vim.keymap.set("v", ">", ">gv")
 vim.keymap.set("v", "<", "<gv")
