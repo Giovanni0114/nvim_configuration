@@ -67,5 +67,6 @@ require 'mappings'
 vim.opt.hlsearch = true
 
 vim.cmd [[nnoremap # <Cmd>let @/='\<'.expand('<cword>').'\>'<bar>set hlsearch<CR>]]
+vim.cmd [[nnoremap <F5> :let _s=@/<Bar>:%s/\s\+$//e<Bar>:let @/=_s<Bar><CR>]]
 
 vim.o.termguicolors = true
