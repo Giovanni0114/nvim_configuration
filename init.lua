@@ -16,8 +16,9 @@ end
 
 if Toolchain ~= "" then
     Toolchain = string.upper(Toolchain or "")
-    print("selected "..Toolchain.." toolchain")
+    print("selected " .. Toolchain .. " toolchain")
 end
+
 local paths = {
     ["VMMB2"] =
     '--query-driver=/home/giovanni/ASD/toolchain/vmmb2/sysroots/x86_64-podsdk-linux/usr/bin/*podos*/*podos-linux-g*',
@@ -25,8 +26,19 @@ local paths = {
     '--query-driver=/home/giovanni/ASD/toolchain/vmmb3/sysroots/x86_64-podsdk-linux/usr/bin/*podos*/*podos-linux-g*',
     ["X86_64"] =
     '--query-driver=/home/giovanni/ASD/toolchain/genericx86-64/sysroots/x86_64-podsdk-linux/usr/bin/*podos*/*podos-linux-g*',
+    ["OC"] = '--query-driver=/home/giovanni/ASD/toolchain/ofonoconnman/sysroots/x86_64-podsdk-linux/usr/bin/*/*podos-linux-g*',
+    ["BUILDROOT"] = '--query-driver=/home/giovanni/ASD/buildroot/output/host/bin/arm-linux-*',
 }
 
 Clang_CMD = { 'clangd', '--clang-tidy', '--offset-encoding=utf-16', '-header-insertion=never', paths[Toolchain] or nil }
+
+local exit_code = io.popen "grep -q 'latte' ~/.config/alacritty/alacritty.toml \necho _$?":read '*a':match '.*%D(%d+)' +
+0
+
+if exit_code == 0 then
+    vim.opt.background = "light"
+else
+    vim.opt.background = "dark"
+end
 
 require("main")
