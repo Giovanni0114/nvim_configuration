@@ -63,7 +63,7 @@ return { -- LSP Configuration & Plugins
         local servers = {
             clangd = {
                 filetypes = { 'c', 'cpp', 'objc', 'objcpp', 'cuda', 'proto' },
-                cmd = Clang_CMD,
+                cmd = { 'clangd', '--clang-tidy', '--offset-encoding=utf-16', '-header-insertion=never', require("toolchain") or nil}
             },
             -- gopls = {},
             pyright = {
