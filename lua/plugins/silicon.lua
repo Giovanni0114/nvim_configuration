@@ -7,10 +7,10 @@ return {
   lazy = true,
   cmd = 'Silicon',
   config = function()
-    require('silicon').setup {
+    require('nvim-silicon').setup {
       to_clipboard = true,
       font = 'JetBrainsMono Nerd Font=34;Noto Color Emoji=34',
-      theme = 'Coldark-Dark',
+      theme = 'Dracula',
       output = function()
         return '/tmp/' .. os.date '!%Y-%m-%dT%H-%M-%S' .. '_code.png'
       end,

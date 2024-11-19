@@ -12,3 +12,11 @@ vim.api.nvim_create_autocmd('TextYankPost', {
     end,
 })
 
+vim.api.nvim_create_augroup("JumpOnBdelete", { clear = true })
+
+vim.api.nvim_create_autocmd("BufDelete", {
+  group = "JumpOnBdelete",
+  callback = function()
+    vim.fn.setpos(".", vim.fn.getpos("."))
+  end,
+})

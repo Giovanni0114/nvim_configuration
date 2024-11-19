@@ -6,7 +6,7 @@ vim.api.nvim_set_keymap('n', '<leader>fa', '', {
         vim.cmd(command)
         vim.cmd('copen')
     end,
-    desc = 'Search current word with vimgrep'
+    desc = 'Search current word with vimgrep (all files)'
 })
 
 vim.api.nvim_set_keymap('n', '<leader>fs', '', {
@@ -17,7 +17,7 @@ vim.api.nvim_set_keymap('n', '<leader>fs', '', {
         vim.cmd(command)
         vim.cmd('copen')
     end,
-    desc = 'Search current word with vimgrep'
+    desc = 'Search current word with vimgrep (src folder)'
 })
 
 vim.api.nvim_set_keymap('n', '<leader>fi', '', {
@@ -28,5 +28,5 @@ vim.api.nvim_set_keymap('n', '<leader>fi', '', {
         vim.cmd(command)
         vim.cmd('copen')
     end,
-    desc = 'Search current word with vimgrep'
+    desc = 'Search current word with vimgrep (include folder)'
 })

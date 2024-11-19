@@ -1,5 +1,6 @@
 local customPaths         = {
-    ["BUILDROOT"] = "/home/giovanni/ASD/buildroot/output/host/bin/arm-linux-*",
+    ["BUILDROOT"] = "/home/giovanni/ASD/toolchain/buildroot/output/host/bin/arm-buildroot-linux-gnueabi-g*",
+    ["TEST"] = "/home/giovanni/ASD/test_wersji/v3/sysroots/x86_64-podsdk-linux/usr/bin/*/*-g*",
 }
 
 local podosAliases        = {
@@ -10,7 +11,7 @@ local podosAliases        = {
 
 local podosToolchainsPath = "/home/giovanni/ASD/toolchain/"
 local clangPrefix         = "--query-driver="
-
+local prefix = "--"
 ---@param toolchainName string
 local function getPodosToolchainName(toolchainName)
     if podosAliases[toolchainName] ~= nil then
@@ -65,4 +66,5 @@ if exists(podosPath .. "/") then
 end
 
 print("no toolchain selected")
-return nil
+
+return prefix.."pretty"

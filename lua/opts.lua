@@ -63,3 +63,8 @@ vim.opt.scrolloff = 3
 vim.opt.hlsearch = true
 
 vim.o.termguicolors = true
+
+vim.o.conceallevel = 2
+
+vim.o.swapfile = false
+vim.o.jumpoptions = "stack"

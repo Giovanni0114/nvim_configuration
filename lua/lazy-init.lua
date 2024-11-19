@@ -20,20 +20,19 @@ require('lazy').setup {
         dependencies = { 'nvim-lua/plenary.nvim' },
         opts = { signs = false }
     },
-
     {                       -- Useful plugin to show you pending keybinds.
         'folke/which-key.nvim',
         event = 'VimEnter', -- Sets the loading event to 'VimEnter'
         config = function() -- This is the function that runs, AFTER loading
-            require('which-key').setup()
+            require('which-key').setup {
+                notify = false,
+            }
 
             -- Document existing key chains
             require('which-key').register {
                 ['<leader>c'] = { name = '[C]ode', _ = 'which_key_ignore' },
-                ['<leader>d'] = { name = '[D]ocument', _ = 'which_key_ignore' },
-                ['<leader>r'] = { name = '[R]ename', _ = 'which_key_ignore' },
-                ['<leader>s'] = { name = '[S]earch', _ = 'which_key_ignore' },
-                ['<leader>w'] = { name = '[W]orkspace', _ = 'which_key_ignore' },
+                ['<leader>t'] = { name = '[T]elescope', _ = 'which_key_ignore' },
+                ['<leader>o'] = { name = '[O]bsidian', _ = 'which_key_ignore' },
             }
         end,
     },
@@ -50,6 +49,22 @@ require('lazy').setup {
             vim.cmd.hi 'Comment gui=none'
         end,
     },
+    -- {
+    --     "0xstepit/flow.nvim",
+    --     lazy = false,
+    --     priority = 1000,
+    --     opts = {},
+    --     config = function()
+    --         require("flow").setup {
+    --             transparent = true, -- Set transparent background.
+    --             fluo_color = "pink", --  Fluo color: pink, yellow, orange, or green.
+    --             mode = "normal", -- Intensity of the palette: normal, bright, desaturate, or dark. Notice that dark is ugly!
+    --             aggressive_spell = false, -- Display colors for spell check.
+    --         }
+    --
+    --         vim.cmd "colorscheme flow"
+    --     end,
+    -- },
 
     { import = 'plugins' },
     { import = 'plugins.mini' },

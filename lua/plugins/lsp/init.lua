@@ -24,6 +24,7 @@ return { -- LSP Configuration & Plugins
                 map('<leader>ws', require('telescope.builtin').lsp_dynamic_workspace_symbols, '[W]orkspace [S]ymbols')
                 map('<leader>rn', '<cmd>lua vim.lsp.buf.rename()<CR><cmd>silent! wa<CR>', "[R]e[N]ame")
                 map('<leader>ca', '<cmd>lua vim.lsp.buf.code_action({ apply = true })<CR>', '[C]ode [A]ction')
+                map('<leader>cA', '<cmd>lua require("tiny-code-action").code_action()<CR>', '[C]ode [A]ction')
                 map('<leader>cs', '<cmd>ClangdSwitchSourceHeader<CR>', '[C]ode [S]witch Source <-> Header')
 
                 map('K', vim.lsp.buf.hover, 'Hover Documentation')
@@ -63,28 +64,11 @@ return { -- LSP Configuration & Plugins
         local servers = {
             clangd = {
                 filetypes = { 'c', 'cpp', 'objc', 'objcpp', 'cuda', 'proto' },
-                cmd = { 'clangd', '--clang-tidy', '--offset-encoding=utf-16', '-header-insertion=never', require("toolchain") or nil}
+                cmd = { 'clangd', '--clang-tidy', '--offset-encoding=utf-16', '-header-insertion=never', require("toolchain") }
             },
-            -- gopls = {},
-            pyright = {
-                cmd = { 'pyright-langserver', '--stdio' },
-                filetypes = { 'python' },
-                root_dir = function(fname)
-                    return require("lspconfig.util").root_pattern(unpack({
-                        'venv',
-                        '.git',
-                    }))(fname)
-                end,
-                single_file_support = true,
-                settings = {
-                    python = {
-                        analysis = {
-                            autoSearchPaths = true,
-                            useLibraryCodeForTypes = true,
-                            diagnosticMode = 'openFilesOnly',
-                        },
-                    },
-                },
+            gopls = {
+            },
+            pylsp = {
             },
             -- rust_analyzer = {},
             -- ... etc. See `:help lspconfig-all` for a list of all the pre-configured LSPs
@@ -97,7 +81,7 @@ return { -- LSP Configuration & Plugins
 
             lua_ls = {
                 -- cmd = {...},
-                -- filetypes { ...},
+                filetypes = { "lua" },
                 -- capabilities = {},
                 settings = {
                     Lua = {
@@ -139,7 +123,7 @@ return { -- LSP Configuration & Plugins
         -- for you, so that they are available from within Neovim.
         local ensure_installed = {}
         vim.list_extend(ensure_installed, {
-            'stylua',     -- Used to format lua code
+            'stylua', -- Used to format lua code
         })
         require('mason-tool-installer').setup { ensure_installed = ensure_installed }
 

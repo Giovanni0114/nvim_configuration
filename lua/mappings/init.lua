@@ -1,7 +1,9 @@
 require "mappings.git-mappings"
 require "mappings.vimgrep-search"
 require "mappings.telescope"
-require "mappings.surrondings"
+require "mappings.obsidian"
+require "mappings.persistance"
+
 
 vim.keymap.set('n', '<leader>fm', '<cmd>lua vim.lsp.buf.format({ async = true })<CR>', { desc = 'Formatting' })
 vim.keymap.set('v', 'f', '<cmd>lua vim.lsp.buf.format({ async = true })<CR>', { desc = 'LSP formatting range' })
@@ -44,7 +46,10 @@ vim.keymap.set("v", ">", ">gv")
 vim.keymap.set("v", "<", "<gv")
 
 -- Buffers
-vim.keymap.set("n", "<A-c>", "<cmd>bdelete<CR>")
+-- vim.keymap.set("n", "<A-c>", "<cmd>bdelete<CR>")
+-- vim.keymap.set("n", "<A-c>", "<cmd>echom 'not that you moron'<CR>")
+
+vim.api.nvim_set_keymap('n', '<A-c>', '<C-^>', { noremap = true, silent = true })
 vim.keymap.set("n", "<A-S-c>", "<cmd>bdelete!<CR>")
 
 vim.keymap.set('n', '<A-S-.>', '<cmd>cn<CR>')
@@ -52,6 +57,9 @@ vim.keymap.set('n', '<A-S-,>', '<cmd>cp<CR>')
 
 vim.keymap.set("n", "<A-.>", "<cmd>bnext<CR>")
 vim.keymap.set("n", "<A-,>", "<cmd>bprevious<CR>")
+
+vim.keymap.set("n", "<C-.>", "<cmd>Gitsigns next_hunk<CR>")
+vim.keymap.set("n", "<C-,>", "<cmd>Gitsigns prev_hunk<CR>")
 
 vim.api.nvim_set_keymap('n', '<A-Up>', ':resize +2<CR>', { noremap = true, silent = true })
 vim.api.nvim_set_keymap('n', '<A-Down>', ':resize -2<CR>', { noremap = true, silent = true })
