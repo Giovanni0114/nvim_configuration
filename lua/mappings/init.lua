@@ -1,8 +1,6 @@
 require "mappings.git-mappings"
 require "mappings.vimgrep-search"
 require "mappings.telescope"
-require "mappings.obsidian"
-require "mappings.persistance"
 
 
 vim.keymap.set('n', '<leader>fm', '<cmd>lua vim.lsp.buf.format({ async = true })<CR>', { desc = 'Formatting' })

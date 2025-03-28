@@ -22,7 +22,8 @@ return { -- Autocompletion
         --  into multiple repos for maintenance purposes.
         'hrsh7th/cmp-nvim-lsp',
         'hrsh7th/cmp-path',
-        'hrsh7th/cmp-buffer',     -- Buffer source for nvim-cmp
+        'hrsh7th/cmp-buffer', -- Buffer source for nvim-cmp
+        "vim-dadbod-completion",
 
         -- If you want to add a bunch of pre-configured snippets,
         --    you can use this plugin to help you. It even has snippets
@@ -91,6 +92,8 @@ return { -- Autocompletion
                 { name = 'luasnip' },
                 { name = 'path' },
                 { name = 'buffer' },
+                { name = "vim-dadbod-completion" },
+                { name = 'render-markdown' },
             },
         }
     end,

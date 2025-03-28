@@ -5,6 +5,7 @@ vim.g.mapleader = ' '
 vim.g.maplocalleader = ' '
 
 vim.opt.relativenumber = true
+vim.opt.linebreak = true
 
 -- Enable mouse mode, can be useful for resizing splits for example!
 vim.opt.mouse = 'a'
@@ -63,8 +64,6 @@ vim.opt.scrolloff = 3
 vim.opt.hlsearch = true
 
 vim.o.termguicolors = true
-
-vim.o.conceallevel = 2
 
 vim.o.swapfile = false
 vim.o.jumpoptions = "stack"

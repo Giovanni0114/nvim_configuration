@@ -3,19 +3,24 @@ local customPaths         = {
     ["TEST"] = "/home/giovanni/ASD/test_wersji/v3/sysroots/x86_64-podsdk-linux/usr/bin/*/*-g*",
 }
 
-local podosAliases        = {
+local aliases        = {
     ["OC"] = "ofonoconnman",
     ["X86"] = "genericx86-64",
     ["X86_64"] = "genericx86-64",
+    ["VENDOS-X86_64"] = "vendos-genericx86-64",
+    ["VENDOS-VMMB3"] = "vendos-vmmb3",
 }
 
-local podosToolchainsPath = "/home/giovanni/ASD/toolchain/"
+
+local toolchainsPathPrefix = "/home/giovanni/ASD/toolchain/"
 local clangPrefix         = "--query-driver="
-local prefix = "--"
+local vendosPathSuffix    = "/sysroots/x86_64-vendsdk-linux/usr/bin/*vendos*/*vendos-linux-g*"
+local podosPathSuffix     = "/sysroots/x86_64-podsdk-linux/usr/bin/*podos*/*podos-linux-g*"
+
 ---@param toolchainName string
 local function getPodosToolchainName(toolchainName)
-    if podosAliases[toolchainName] ~= nil then
-        return podosAliases[toolchainName]
+    if aliases[toolchainName] ~= nil then
+        return aliases[toolchainName]
     end
 
     return toolchainName
@@ -47,7 +52,7 @@ local toolchain = readFromFile("./.toolchain") or ""
 
 if toolchain == "" then
     print("no toolchain selected")
-    return nil
+    return "--pretty"
 end
 
 toolchain = string.upper(toolchain or "")
@@ -58,13 +63,14 @@ if customPaths[toolchain] ~= nil then
 end
 
 local podosToolchain = getPodosToolchainName(toolchain)
-local podosPath = podosToolchainsPath .. string.lower(podosToolchain)
+local podosPath = toolchainsPathPrefix .. string.lower(podosToolchain)
+local suffix = string.match(podosToolchain, "vendos") and vendosPathSuffix or podosPathSuffix
 
 if exists(podosPath .. "/") then
     print("selected podos " .. toolchain .. " toolchain")
-    return clangPrefix .. podosPath .. "/sysroots/x86_64-podsdk-linux/usr/bin/*podos*/*podos-linux-g*"
+    return clangPrefix .. podosPath .. suffix
 end
 
-print("no toolchain selected")
+print("no toolchain selected but something is wrong")
 
-return prefix.."pretty"
+return "--pretty"
