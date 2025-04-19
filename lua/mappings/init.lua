@@ -1,13 +1,15 @@
 require "mappings.git-mappings"
 require "mappings.vimgrep-search"
 require "mappings.telescope"
-
+require "mappings.markdown-mappings"
 
 vim.keymap.set('n', '<leader>fm', '<cmd>lua vim.lsp.buf.format({ async = true })<CR>', { desc = 'Formatting' })
 vim.keymap.set('v', 'f', '<cmd>lua vim.lsp.buf.format({ async = true })<CR>', { desc = 'LSP formatting range' })
 
 -- Utils 
-vim.keymap.set("x", "p", 'p:let @+=@0<CR>:let @"=@0<CR>', { desc = "Dont copy replaced text" })
+-- vim.keymap.set("x", "p", 'p:let @+=@0<CR>:let @"=@0<CR>', { desc = "Dont copy replaced text" })
+vim.keymap.set("x", "gr", 'p:let @+=@0<CR>:let @"=@0<CR>', { desc = "Dont copy replaced text" })
+
 vim.cmd [[nnoremap # <Cmd>let @/='\<'.expand('<cword>').'\>'<bar>set hlsearch<CR>]]
 vim.cmd [[nnoremap <F5> :let _s=@/<Bar>:%s/\s\+$//e<Bar>:let @/=_s<Bar><CR>]]
 vim.keymap.set('n', '<Esc>', '<cmd>nohlsearch<CR>', { desc = "remove hightlight selection" })
