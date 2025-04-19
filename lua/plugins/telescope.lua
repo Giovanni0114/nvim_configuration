@@ -30,15 +30,8 @@ return {     -- Fuzzy Finder (files, lsp, etc)
                     i = { ['<c-enter>'] = 'to_fuzzy_refine' },
                 },
             },
-            extensions = {
-                ['ui-select'] = {
-                    require('telescope.themes').get_dropdown(),
-                },
-            },
         }
 
-        -- Enable telescope extensions, if they are installed
         pcall(require('telescope').load_extension, 'fzf')
-        pcall(require('telescope').load_extension, 'ui-select')
     end,
 }
