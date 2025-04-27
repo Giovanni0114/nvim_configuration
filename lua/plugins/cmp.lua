@@ -14,6 +14,11 @@ return { -- Autocompletion
         'hrsh7th/cmp-path',
         'hrsh7th/cmp-buffer',
         "vim-dadbod-completion",
+        {
+            "zbirenbaum/copilot-cmp",
+            event = "InsertEnter",
+            -- config = function () require("copilot_cmp").setup() end,
+        },
     },
 
     config = function()
@@ -21,7 +26,7 @@ return { -- Autocompletion
         local cmp = require 'cmp'
         local luasnip = require 'luasnip'
         luasnip.config.setup {}
-
+    
         cmp.setup {
             snippet = {
                 expand = function(args)
@@ -42,6 +47,7 @@ return { -- Autocompletion
             },
 
             sources = {
+                -- { name = 'copilot' },
                 { name = 'nvim_lsp' },
                 { name = 'luasnip' },
                 { name = 'path' },

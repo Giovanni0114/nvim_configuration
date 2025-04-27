@@ -11,4 +11,5 @@ require('lazy').setup {
     { import = 'plugins' },
     { import = 'plugins.mini' },
     { import = 'plugins.git' },
+    { import = 'plugins.treesitter' },
 }
