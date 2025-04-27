@@ -26,6 +26,7 @@ return {     -- Fuzzy Finder (files, lsp, etc)
 
         require('telescope').setup {
             defaults = {
+                layout_strategy = "vertical",
                 mappings = {
                     i = { ['<c-enter>'] = 'to_fuzzy_refine' },
                 },
