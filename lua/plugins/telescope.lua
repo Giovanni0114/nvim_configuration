@@ -26,12 +26,20 @@ return {     -- Fuzzy Finder (files, lsp, etc)
 
         require('telescope').setup {
             defaults = {
+                layout_strategy = "vertical",
                 mappings = {
                     i = { ['<c-enter>'] = 'to_fuzzy_refine' },
                 },
             },
+            extensions = {
+                ['ui-select'] = {
+                    require('telescope.themes').get_dropdown(),
+                },
+            },
         }
 
+        -- Enable telescope extensions, if they are installed
         pcall(require('telescope').load_extension, 'fzf')
+        pcall(require('telescope').load_extension, 'ui-select')
     end,
 }
