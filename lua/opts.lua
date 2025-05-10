@@ -7,6 +7,8 @@ vim.g.maplocalleader = ' '
 vim.opt.relativenumber = true
 vim.opt.linebreak = true
 
+vim.diagnostic.enable(false)
+
 -- Enable mouse mode, can be useful for resizing splits for example!
 vim.opt.mouse = 'a'
 
