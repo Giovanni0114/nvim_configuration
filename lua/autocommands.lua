@@ -40,7 +40,5 @@ vim.api.nvim_create_autocmd('LspAttach', {
 
         -- map('K', vim.lsp.buf.hover, 'Hover Documentation')
         map('gd', vim.lsp.buf.declaration, '[G]oto [D]eclaration')
-
-        vim.notify('LSP attached', vim.log.levels.INFO)
     end,
 })
