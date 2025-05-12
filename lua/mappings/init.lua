@@ -8,6 +8,7 @@ require "mappings.lsp-mappings"
 
 -- vim.keymap.set("x", "p", 'p:let @+=@0<CR>:let @"=@0<CR>', { desc = "Dont copy replaced text" })
 vim.keymap.set("x", "gp", 'p:let @+=@0<CR>:let @"=@0<CR>', { desc = "Dont copy replaced text" })
+
 vim.cmd [[nnoremap # <Cmd>let @/='\<'.expand('<cword>').'\>'<bar>set hlsearch<CR>]]
 vim.cmd [[nnoremap <F5> :let _s=@/<Bar>:%s/\s\+$//e<Bar>:let @/=_s<Bar><CR>]]
 vim.keymap.set('n', '<Esc>', '<cmd>nohlsearch<CR>', { desc = "remove hightlight selection" })
@@ -55,6 +56,13 @@ vim.api.nvim_set_keymap('n', '<A-Right>', ':vertical resize -2<CR>', { noremap =
 local function find_corresponding_file()
   local current = vim.api.nvim_buf_get_name(0)
   local filename = vim.fn.fnamemodify(current, ":t") -- Just the filename
+
+  -- Check if the file is a .cpp or .hpp filename
+  if not filename:match("%.cpp$") and not filename:match("%.hpp$") then
+    print("Not a .cpp or .hpp file")
+    return
+  end
+
   local root = vim.fn.getcwd()
   local base = filename:gsub("%.[ch]pp$", "")
   local target_ext = filename:match("%.cpp$") and "hpp" or "cpp"
@@ -72,7 +80,7 @@ local function find_corresponding_file()
   end
 
   -- Use 'fd' or 'find' to locate the file in project
-  local cmd = string.format("find %q -type f -name %q", root, target_name)
+  local cmd = string.format("find %q -type f -name %q -print -quit", root, target_name)
   local handle = io.popen(cmd)
   if not handle then
     print("Unable to run search command")
