@@ -71,3 +71,6 @@ vim.o.termguicolors = true
 
 vim.o.swapfile = false
 vim.o.jumpoptions = "stack"
+
+ -- set foldmethod to manual
+vim.o.foldmethod = "manual"

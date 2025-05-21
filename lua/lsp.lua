@@ -4,7 +4,7 @@
 -- also formattes is problemstic, mayby i should familiarize with null-ls or
 -- check how lspconfig did it
 
-vim.lsp.enable({"lua_ls"})
+-- vim.lsp.enable({"lua_ls"})
 -- vim.lsp.enable({"clangd"}) 
 vim.lsp.enable({"pylsp"})
 vim.lsp.enable({"rust"})

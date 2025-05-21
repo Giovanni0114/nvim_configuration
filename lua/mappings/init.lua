@@ -57,17 +57,22 @@ local function find_corresponding_file()
   local current = vim.api.nvim_buf_get_name(0)
   local filename = vim.fn.fnamemodify(current, ":t") -- Just the filename
 
-  -- Check if the file is a .cpp or .hpp filename
-  if not filename:match("%.cpp$") and not filename:match("%.hpp$") then
+  local base = nil
+  if filename:match("%.cpp$") or filename:match("%.c$") then
+    base = filename:gsub("%.[cp]+$", "")
+    target_ext = "h"
+  elseif filename:match("%.hpp$") or filename:match("%.h$") then
+    base = filename:gsub("%.[hp]+$", "")
+    target_ext = "c"
+  else
     print("Not a .cpp or .hpp file")
     return
   end
 
-  local root = vim.fn.getcwd()
-  local base = filename:gsub("%.[ch]pp$", "")
-  local target_ext = filename:match("%.cpp$") and "hpp" or "cpp"
   local target_name = base .. "." .. target_ext
+  local target_name_pp = base .. "." .. target_ext .. "pp"
 
+  print("Searching for: " .. target_name .. " or " .. target_name_pp)
   -- Check if it's already open in another buffer
   for _, buf in ipairs(vim.api.nvim_list_bufs()) do
     if vim.api.nvim_buf_is_loaded(buf) then
@@ -76,11 +81,15 @@ local function find_corresponding_file()
         vim.api.nvim_set_current_buf(buf)
         return
       end
+
+      if vim.fn.fnamemodify(bufname, ":t") == target_name_pp then
+        vim.api.nvim_set_current_buf(buf)
+        return
+      end
     end
   end
 
-  -- Use 'fd' or 'find' to locate the file in project
-  local cmd = string.format("find %q -type f -name %q -print -quit", root, target_name)
+  local cmd = string.format("find %q -type f \\( -name %q -or -name %q \\) -print -quit", vim.fn.getcwd(), target_name, target_name_pp)
   local handle = io.popen(cmd)
   if not handle then
     print("Unable to run search command")
