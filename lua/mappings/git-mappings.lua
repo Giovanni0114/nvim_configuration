@@ -6,6 +6,6 @@ vim.keymap.set("n", "<leader>gb", "<cmd>lua require('gitsigns').blame_line()<CR>
 
 vim.keymap.set("n", "<leader>bt", "<cmd>BlameToggle virtual<CR>", { desc = "Git Balme Toggle (virtual)" })
 
-vim.keymap.set("n", "<C-.>", "<cmd>Gitsigns next_hunk<CR>")
-vim.keymap.set("n", "<C-,>", "<cmd>Gitsigns prev_hunk<CR>")
+vim.keymap.set("n", "<C-s>", "<cmd>Gitsigns next_hunk<CR>")
+-- vim.keymap.set("n", "<C-,>", "<cmd>Gitsigns prev_hunk<CR>")
 
