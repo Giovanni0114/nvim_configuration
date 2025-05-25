@@ -7,7 +7,7 @@ require "mappings.lsp-mappings"
 -- Utils
 
 -- vim.keymap.set("x", "p", 'p:let @+=@0<CR>:let @"=@0<CR>', { desc = "Dont copy replaced text" })
-vim.keymap.set("x", "gr", 'p:let @+=@0<CR>:let @"=@0<CR>', { desc = "Dont copy replaced text" })
+vim.keymap.set("x", "gp", 'p:let @+=@0<CR>:let @"=@0<CR>', { desc = "Dont copy replaced text" })
 vim.cmd [[nnoremap # <Cmd>let @/='\<'.expand('<cword>').'\>'<bar>set hlsearch<CR>]]
 vim.cmd [[nnoremap <F5> :let _s=@/<Bar>:%s/\s\+$//e<Bar>:let @/=_s<Bar><CR>]]
 vim.keymap.set('n', '<Esc>', '<cmd>nohlsearch<CR>', { desc = "remove hightlight selection" })
