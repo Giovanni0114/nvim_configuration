@@ -11,5 +11,7 @@ require 'floatterm'
 
 require 'diagnostic_toggle'
 
+require 'switch-files'
+
 require 'lsp'
 
