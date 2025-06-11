@@ -6,3 +6,5 @@ vim.g.copilot_enabled = 0
 
 require('render-markdown').enable()
 
+vim.keymap.set("n", "<C-m>", ":ToggleCheckbox<CR>j", { noremap = true, silent = true, buffer = vim.api.nvim_get_current_buf()})
+
