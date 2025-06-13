@@ -40,7 +40,15 @@ local function create_floating_window(opts)
 end
 
 local toggle_terminal = function()
-  vim.cmd [[:wa]]
+    -- iterates through all buffers and saves the ones with a name
+ for _, buf in ipairs(vim.api.nvim_list_bufs()) do
+    if vim.api.nvim_buf_get_name(buf) ~= "" and vim.api.nvim_buf_is_loaded(buf) and vim.api.nvim_buf_get_option(buf, 'modified') and vim.api.nvim_buf_get_option(buf, 'buftype') ~= 'terminal' then
+        vim.api.nvim_buf_call(buf, function()
+            vim.cmd('write')
+        end)
+    end
+  end
+
   if not vim.api.nvim_win_is_valid(state.floating.win) then
     state.floating = create_floating_window { buf = state.floating.buf }
     if vim.bo[state.floating.buf].buftype ~= "terminal" then

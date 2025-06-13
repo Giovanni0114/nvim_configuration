@@ -2,7 +2,6 @@ local builtin = require 'telescope.builtin'
 
 vim.keymap.set('n', '<leader>t.', builtin.oldfiles, { desc = '[T]elescope Recent Files ("." for repeat)' })
 vim.keymap.set('n', '<leader>ta', builtin.find_files, { desc = '[T]elescope All Files' })
-vim.keymap.set('n', '<leader>td', builtin.diagnostics, { desc = '[T]elescope [D]iagnostics' })
 vim.keymap.set('n', '<leader>tf', builtin.git_files, { desc = '[T]elescope [F]iles (only git scope)' })
 vim.keymap.set('n', '<leader>tg', builtin.live_grep, { desc = '[T]elescope by [G]rep' })
 vim.keymap.set('n', '<leader>th', builtin.help_tags, { desc = '[T]elescope [H]elp' })

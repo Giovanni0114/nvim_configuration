@@ -8,6 +8,7 @@ require "mappings.lsp-mappings"
 
 -- vim.keymap.set("x", "p", 'p:let @+=@0<CR>:let @"=@0<CR>', { desc = "Dont copy replaced text" })
 vim.keymap.set("x", "gp", 'p:let @+=@0<CR>:let @"=@0<CR>', { desc = "Dont copy replaced text" })
+
 vim.cmd [[nnoremap # <Cmd>let @/='\<'.expand('<cword>').'\>'<bar>set hlsearch<CR>]]
 vim.cmd [[nnoremap <F5> :let _s=@/<Bar>:%s/\s\+$//e<Bar>:let @/=_s<Bar><CR>]]
 vim.keymap.set('n', '<Esc>', '<cmd>nohlsearch<CR>', { desc = "remove hightlight selection" })
@@ -23,8 +24,8 @@ vim.keymap.set("v", "<", "<gv")
 vim.keymap.set('n', '<A-c>', '<C-^>')
 vim.keymap.set("n", "<A-S-c>", "<cmd>bdelete!<CR>")
 
-vim.keymap.set('n', '<A-S-.>', '<cmd>cn<CR>')
-vim.keymap.set('n', '<A-S-,>', '<cmd>cp<CR>')
+vim.keymap.set('n', '<C-PageDown>', '<cmd>cn<CR>')
+vim.keymap.set('n', '<C-PageUp>', '<cmd>cp<CR>')
 
 vim.keymap.set("n", "<A-.>", "<cmd>bnext<CR>")
 vim.keymap.set("n", "<A-,>", "<cmd>bprevious<CR>")

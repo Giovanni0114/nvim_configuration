@@ -16,6 +16,7 @@ return  {
                   dismiss = "<A-[>",
                 },
             },
+          copilot_model = "gpt-4o-copilot"
         })
       end,
 }
