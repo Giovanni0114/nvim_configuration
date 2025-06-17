@@ -29,8 +29,12 @@ return {
             -- | block | width of the code block  |
             -- | full  | full width of the window |
             width = "block",
-            left_margin = 1,
-            left_pad = 1,
+            -- width = "full",
+            -- left_margin = 1,
+            -- left_pad = 1,
+            --
+            -- right_margin = 1,
+            right_pad = 1,
 
             -- Determines how the top / bottom of code block are rendered.
             -- | none  | do not render a border                               |
