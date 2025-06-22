@@ -63,8 +63,8 @@ M.toggle_line = function(bufnr, cursor)
 
     vim.api.nvim_buf_set_lines(bufnr, start_line, start_line + 1, false, { new_line })
     vim.api.nvim_win_set_cursor(0, { cursor[1] + 1, cursor[2] })
-    require('progress').update_progress()
     require("progress").validate_progress()
+    require('progress').update_progress()
 end
 
 M.mark_line_unchecked = function (bufnr, cursor)

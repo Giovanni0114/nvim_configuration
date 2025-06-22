@@ -200,8 +200,62 @@ M.update_progress = function()
     end
 end
 
+M.update_progress_for_buf = function(bufnr)
+    lines = vim.api.nvim_buf_get_lines(bufnr, 0, -1, false)
+
+    -- If no tasks exist in the file, skip the rest of the checking
+    local content = table.concat(lines, "\n")
+    if not content:match("%[%s%]") and not content:match("%[x%]") then
+        vim.api.nvim_buf_clear_namespace(bufnr, progress_ns, 0, -1)
+        return
+    end
+    vim.api.nvim_buf_clear_namespace(bufnr, progress_ns, 0, -1)
+
+    for ln = 1, #lines do
+        local line = lines[ln]
+        if get_task_content_start_col(line) then
+            local progress, has_children, incomplete_count = calculate_progress(lines, ln)
+            if has_children then
+                local display_text = string.format("[ %.1f%% ]", progress * 100)
+                local hl_group = "Comment"
+                vim.api.nvim_buf_set_extmark(bufnr, progress_ns, ln - 1, -1, {
+                    virt_text = { { display_text, hl_group } },
+                    virt_text_pos = "eol",
+                })
+            end
+        end
+    end
+end
+
+
 M.validate_progress = function()
     local bufnr = vim.api.nvim_get_current_buf()
+    lines = vim.api.nvim_buf_get_lines(bufnr, 0, -1, false)
+
+    -- If no tasks exist in the file, skip the rest of the checking
+    local content = table.concat(lines, "\n")
+    if not content:match("%[%s%]") and not content:match("%[x%]") then
+        vim.api.nvim_buf_clear_namespace(bufnr, progress_ns, 0, -1)
+        return
+    end
+    vim.api.nvim_buf_clear_namespace(bufnr, progress_ns, 0, -1)
+
+    for ln = 1, #lines do
+        local line = lines[ln]
+        if get_task_content_start_col(line) then
+            local progress, has_children, incomplete_count = calculate_progress(lines, ln)
+            if has_children then
+                if progress == 1.0 then
+                    require("checkbox_toggle").mark_line_checked(bufnr, { ln, 0 })
+                else
+                    require("checkbox_toggle").mark_line_unchecked(bufnr, { ln, 0 })
+                end
+            end
+        end
+    end
+end
+
+M.validate_progress_for_buf = function(bufnr)
     lines = vim.api.nvim_buf_get_lines(bufnr, 0, -1, false)
 
     -- If no tasks exist in the file, skip the rest of the checking
