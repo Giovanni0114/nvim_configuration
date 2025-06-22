@@ -1,5 +1,4 @@
 require 'opts'
-
 require 'lazy-init'
 require 'lsp-init'
 

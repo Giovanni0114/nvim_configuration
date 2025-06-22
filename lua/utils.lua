@@ -1,4 +1,3 @@
-M = {}
 
 -- Load all Lua scripts from the specified folder
 local load_scripts_from_path = function(folder, raw)
@@ -11,6 +10,8 @@ local load_scripts_from_path = function(folder, raw)
     end
     p:close()
 end
+
+M = {}
 
 M.load_scripts = function(raw)
     folder = vim.fn.stdpath('config') .. '/lua/' .. raw
