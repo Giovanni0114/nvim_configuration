@@ -1,7 +1,7 @@
-return {     -- Fuzzy Finder (files, lsp, etc)
+return {
     'nvim-telescope/telescope.nvim',
     event = 'VimEnter',
-    branch = '0.1.x',
+    branch = 'master',
     dependencies = {
         'nvim-telescope/telescope-symbols.nvim',
         'nvim-lua/plenary.nvim',
@@ -31,15 +31,8 @@ return {     -- Fuzzy Finder (files, lsp, etc)
                     i = { ['<c-enter>'] = 'to_fuzzy_refine' },
                 },
             },
-            extensions = {
-                ['ui-select'] = {
-                    require('telescope.themes').get_dropdown(),
-                },
-            },
         }
 
-        -- Enable telescope extensions, if they are installed
         pcall(require('telescope').load_extension, 'fzf')
-        pcall(require('telescope').load_extension, 'ui-select')
     end,
 }

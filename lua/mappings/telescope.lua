@@ -2,8 +2,7 @@ local builtin = require('telescope.builtin')
 local action_state = require('telescope.actions.state')
 local actions = require('telescope.actions')
 
-local buffer_searcher
-buffer_searcher = function()
+local buffer_searcher = function()
     builtin.buffers {
         attach_mappings = function(prompt_bufnr, map)
             local refresh_buffer_searcher = function()
@@ -31,6 +30,8 @@ buffer_searcher = function()
     }
 end
 
+vim.keymap.set('n', '<leader><leader>', buffer_searcher, { desc = '[ ] Find existing buffers' })
+
 vim.keymap.set('n', '<leader>t.', builtin.oldfiles, { desc = '[T]elescope Recent Files ("." for repeat)' })
 vim.keymap.set('n', '<leader>ta', builtin.find_files, { desc = '[T]elescope All Files' })
 vim.keymap.set('n', '<leader>tf', builtin.git_files, { desc = '[T]elescope [F]iles (only git scope)' })
@@ -43,15 +44,6 @@ vim.keymap.set('n', '<leader>tr', builtin.lsp_references, { desc = '[T]elescope 
 vim.keymap.set('n', '<leader>ts', builtin.builtin, { desc = '[T]elescope [S]elect Telescope' })
 vim.keymap.set('n', '<leader>tw', builtin.grep_string, { desc = '[T]elescope current [W]ord' })
 
-vim.keymap.set('n', '<leader><leader>', buffer_searcher, { desc = '[ ] Find existing buffers' })
-
-vim.keymap.set('n', '<leader>/', function()
-    -- You can pass additional configuration to telescope to change theme, layout, etc.
-    builtin.current_buffer_fuzzy_find(require('telescope.themes').get_dropdown {
-        winblend = 10,
-        previewer = false,
-    })
-end, { desc = '[/] Fuzzily search in current buffer' })
 
 vim.keymap.set('n', '<leader>t/', function()
     builtin.live_grep {
@@ -62,5 +54,5 @@ end, { desc = '[T]elescope [/] in Open Files' })
 
 -- Shortcut for searching neovim configuration files
 vim.keymap.set('n', '<leader>nn', function()
-    builtin.find_files { cwd = vim.fn.stdpath 'config' }
+    builtin.find_files { cwd = vim.fn.stdpath('config') }
 end, { desc = '[N]eovim files' })
