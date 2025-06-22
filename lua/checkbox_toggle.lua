@@ -46,14 +46,10 @@ local checkbox = {
 
 local M = {}
 
-M.toggle = function()
-    local bufnr = vim.api.nvim_buf_get_number(0)
-    local cursor = vim.api.nvim_win_get_cursor(0)
+M.toggle_line = function(bufnr, cursor)
     local start_line = cursor[1] - 1
     local current_line = vim.api.nvim_buf_get_lines(bufnr, start_line, start_line + 1, false)[1] or ""
 
-    -- If the line contains a checked checkbox then uncheck it.
-    -- Otherwise, if it contains an unchecked checkbox, check it.
     local new_line = ""
 
     if not line_with_checkbox(current_line) then
@@ -66,9 +62,39 @@ M.toggle = function()
     end
 
     vim.api.nvim_buf_set_lines(bufnr, start_line, start_line + 1, false, { new_line })
-    vim.api.nvim_win_set_cursor(0, cursor)
+    vim.api.nvim_win_set_cursor(0, { cursor[1] + 1, cursor[2] })
+    require("progress").validate_progress()
+    require('progress').update_progress()
 end
 
-vim.api.nvim_create_user_command("ToggleCheckbox", M.toggle, {})
+M.mark_line_unchecked = function (bufnr, cursor)
+    local start_line = cursor[1] - 1
+    local current_line = vim.api.nvim_buf_get_lines(bufnr, start_line, start_line + 1, false)[1] or ""
+
+    local new_line = ""
+
+    if not line_with_checkbox(current_line) or line_contains_unchecked(current_line)then
+        return
+    elseif line_contains_checked(current_line) then
+        new_line = checkbox.uncheck(current_line)
+    end
+
+    vim.api.nvim_buf_set_lines(bufnr, start_line, start_line + 1, false, { new_line })
+end
+
+M.mark_line_checked = function (bufnr, cursor)
+    local start_line = cursor[1] - 1
+    local current_line = vim.api.nvim_buf_get_lines(bufnr, start_line, start_line + 1, false)[1] or ""
+
+    local new_line = ""
+
+    if not line_with_checkbox(current_line) or line_contains_checked(current_line)then
+        return
+    elseif line_contains_unchecked(current_line) then
+        new_line = checkbox.check(current_line)
+    end
+
+    vim.api.nvim_buf_set_lines(bufnr, start_line, start_line + 1, false, { new_line })
+end
 
 return M

@@ -75,3 +75,4 @@ vim.o.jumpoptions = "stack"
  -- set foldmethod to manual
 vim.o.foldmethod = "manual"
 vim.o.foldcolumn = "1"
+vim.o.viewoptions = "folds,cursor"

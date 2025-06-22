@@ -5,7 +5,6 @@ function M.toggle()
     vim.notify('diagnostics ' .. (vim.diagnostic.is_enabled() and 'ENABLED' or 'DISABLED'), vim.log.levels.INFO)
 end
 
--- kick everything off disabled when an LSP attaches to a fresh buffer
 vim.api.nvim_create_autocmd('LspAttach', {
     group    = vim.api.nvim_create_augroup('diagnostic_toggle', { clear = true }),
     callback = function(ev) -- ev.buf is the buffer that just got an LSP
@@ -16,6 +15,6 @@ vim.api.nvim_create_autocmd('LspAttach', {
 })
 
 vim.api.nvim_create_user_command('ToggleDiagnostics', M.toggle, {})
-vim.keymap.set('n', '<leader>sd', M.toggle, { desc = 'switch all diagnostics' })
+vim.keymap.set('n', '<leader>lt', M.toggle, { desc = '[L]sp diagnostics toggle' })
 
 return M

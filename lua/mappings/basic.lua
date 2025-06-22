@@ -1,11 +1,3 @@
-require "mappings.git-mappings"
-require "mappings.vimgrep-search"
-require "mappings.telescope"
-require "mappings.markdown-mappings"
-require "mappings.lsp-mappings"
-
--- Utils
-
 -- vim.keymap.set("x", "p", 'p:let @+=@0<CR>:let @"=@0<CR>', { desc = "Dont copy replaced text" })
 vim.keymap.set("x", "gp", 'p:let @+=@0<CR>:let @"=@0<CR>', { desc = "Dont copy replaced text" })
 
@@ -52,3 +44,9 @@ vim.api.nvim_set_keymap('n', '<A-Down>', ':resize -2<CR>', { noremap = true, sil
 vim.api.nvim_set_keymap('n', '<A-Left>', ':vertical resize +2<CR>', { noremap = true, silent = true })
 vim.api.nvim_set_keymap('n', '<A-Right>', ':vertical resize -2<CR>', { noremap = true, silent = true })
 
+
+vim.keymap.set("n", "<C-m>", function ()
+    local bufnr = vim.api.nvim_buf_get_number(0)
+    local cursor = vim.api.nvim_win_get_cursor(0)
+    require('checkbox_toggle').toggle_line(bufnr, cursor)
+end, { noremap = true, silent = true})
