@@ -1,11 +1,3 @@
-require "mappings.git-mappings"
-require "mappings.vimgrep-search"
-require "mappings.telescope"
-require "mappings.markdown-mappings"
-require "mappings.lsp-mappings"
-
--- Utils
-
 -- vim.keymap.set("x", "p", 'p:let @+=@0<CR>:let @"=@0<CR>', { desc = "Dont copy replaced text" })
 vim.keymap.set("x", "gp", 'p:let @+=@0<CR>:let @"=@0<CR>', { desc = "Dont copy replaced text" })
 

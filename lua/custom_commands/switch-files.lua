@@ -51,4 +51,5 @@ local function find_corresponding_file()
   end
 end
 
+vim.api.nvim_create_user_command("FindCorrespondingFile", find_corresponding_file, {})
 vim.keymap.set("n", "<leader>ss", find_corresponding_file, { desc = "Toggle .cpp/.hpp" })

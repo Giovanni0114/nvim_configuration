@@ -1,29 +1,29 @@
 return {
     "MeanderingProgrammer/render-markdown.nvim",
-    dependencies = {"nvim-treesitter/nvim-treesitter", "nvim-tree/nvim-web-devicons"},
+    dependencies = { "nvim-treesitter/nvim-treesitter", "nvim-tree/nvim-web-devicons" },
     lazy = true,
     opts = {
         bullet = {
-            icons = {"•", "◦", "◆", "◇"}
+            icons = { "•", "◦", "◆", "◇" }
         },
-        checkbox = {
-            unchecked = {
-                icon = "󰄱",
-                highlight = "RenderMarkdownUnchecked",
-                scope_highlight = nil
-            },
-            checked = {
-                icon = "󰱒",
-                highlight = "RenderMarkdownChecked",
-                scope_highlight = "RenderMarkdownChecked"
-            },
-            custom = {
-                todo    = {raw = "[-]", rendered = "󰥔", highlight = "RenderMarkdownTodo", scope_highlight = nil},
-                warn    = {raw = "[/]", rendered = "", highlight = "RenderMarkdownWarn", scope_highlight = nil},
-                error   = {raw = "[~]", rendered = "󰜺", highlight = "RenderMarkdownError", scope_highlight = "RenderMarkdownError" },
-                abort   = {raw = "[_]", rendered = "󰚃", highlight = "RenderMarkdownHtmlComment", scope_highlight = "@markup.strikethrough" }
-            }
-        },
+        -- checkbox = {
+        --     unchecked = {
+        --         icon = "󰄱 ",
+        --         highlight = "RenderMarkdownUnchecked",
+        --         scope_highlight = nil
+        --     },
+        --     checked = {
+        --         icon = "󰱒 ",
+        --         highlight = "RenderMarkdownChecked",
+        --         scope_highlight = "RenderMarkdownChecked"
+        --     },
+        --     custom = {
+        --         todo  = { raw = "[-]", rendered = "󰥔 ", highlight = "RenderMarkdownTodo", scope_highlight = nil },
+        --         warn  = { raw = "[/]", rendered = " ", highlight = "RenderMarkdownWarn", scope_highlight = nil },
+        --         error = { raw = "[~]", rendered = "󰜺 ", highlight = "RenderMarkdownError", scope_highlight = "RenderMarkdownError" },
+        --         abort = { raw = "[_]", rendered = "󰚃 ", highlight = "RenderMarkdownHtmlComment", scope_highlight = "@markup.strikethrough" }
+        --     }
+        -- },
         code = {
             -- Width of the code block background.
             -- | block | width of the code block  |
