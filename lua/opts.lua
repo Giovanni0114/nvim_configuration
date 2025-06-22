@@ -1,6 +1,8 @@
 -- Set <space> as the leader key
+--
 -- See `:help mapleader`
 --  NOTE: Must happen before plugins are loaded (otherwise wrong leader will be used)
+
 vim.g.mapleader = ' '
 vim.g.maplocalleader = ' '
 
@@ -69,3 +71,8 @@ vim.o.termguicolors = true
 
 vim.o.swapfile = false
 vim.o.jumpoptions = "stack"
+
+ -- set foldmethod to manual
+vim.o.foldmethod = "manual"
+vim.o.foldcolumn = "1"
+vim.o.viewoptions = "folds,cursor"
