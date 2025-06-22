@@ -16,3 +16,4 @@ require 'switch-files'
 
 require 'lsp'
 
+require 'progress'
