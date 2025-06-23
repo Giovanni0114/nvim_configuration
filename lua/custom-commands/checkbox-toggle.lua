@@ -288,6 +288,8 @@ local update_progress = function()
                     display_text = display_text .. string.format(" 󰚃 %d", aborted_count)
                 end
 
+                display_text = display_text .. " "
+
                 local hl_group = "Comment"
                 vim.api.nvim_buf_set_extmark(bufnr, progress_ns, ln - 1, -1, {
                     virt_text = { { display_text, hl_group } },
