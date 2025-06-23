@@ -62,6 +62,17 @@ local function is_marked_done(line)
     return nil
 end
 
+-- Checks if a task is marked as done (e.g., "[x]").
+-- @param line (string): The line content.
+-- @return (boolean|nil): True if done, false if not, nil if not a valid task checkbox.
+local function is_marked_aborted (line)
+    local state = line:match("%[(.)%]")
+    if state == "_" then
+        return true
+    end
+    return nil
+end
+
 local function is_header_line(line)
     if not line then
         return nil
@@ -177,6 +188,8 @@ local function calculate_progress(lines, start_ln)
     local children_progress_total = 0
     local children_count = 0
     local total_incomplete_count = 0
+    local total_aborted_count = 0
+    local total_complete_count = 0
     local direct_child_bound = nil
 
     for ln = start_ln + 1, #lines do
@@ -195,18 +208,21 @@ local function calculate_progress(lines, start_ln)
 
             if child_bound == direct_child_bound then
                 children_count = children_count + 1
-                local child_progress, _, child_incomplete = calculate_progress(lines, ln)
+                local child_progress, _, child_incomplete, child_aborted, child_complete = calculate_progress(lines, ln)
                 children_progress_total = children_progress_total + child_progress
                 total_incomplete_count = total_incomplete_count + child_incomplete
+                total_complete_count = total_complete_count + child_complete
+                total_aborted_count = total_aborted_count + child_aborted
             end
         end
     end
 
     if children_count > 0 then
-        return children_progress_total / children_count, true, total_incomplete_count
+        return children_progress_total / children_count, true, total_incomplete_count, total_aborted_count, total_complete_count
     else
         local done = is_marked_done(line)
-        return done and 1.0 or 0.0, false, done and 0 or 1
+        local aborted = is_marked_aborted(line)
+        return done and 1.0 or 0.0, false, done and 0 or 1, aborted and 1 or 0, done and 1 or 0
     end
 end
 
@@ -256,9 +272,22 @@ local update_progress = function()
     for ln = 1, #lines do
         local line = lines[ln]
         if get_task_content_start_col(line) then
-            local progress, has_children, incomplete_count = calculate_progress(lines, ln)
+            local progress, has_children, incomplete_count, aborted_count, complete_count = calculate_progress(lines, ln)
             if has_children then
-                local display_text = string.format(" [ 󰱒 %.1f%% ] ", progress * 100)
+                local display_text = string.format(" [%.1f%%]", progress * 100)
+
+                if complete_count > 0 then 
+                    display_text = display_text .. string.format(" 󰱒 %d", complete_count)
+                end
+
+                if incomplete_count > 0 then 
+                    display_text = display_text .. string.format(" 󰄱 %d", incomplete_count)
+                end
+
+                if aborted_count > 0 then
+                    display_text = display_text .. string.format(" 󰚃 %d", aborted_count)
+                end
+
                 local hl_group = "Comment"
                 vim.api.nvim_buf_set_extmark(bufnr, progress_ns, ln - 1, -1, {
                     virt_text = { { display_text, hl_group } },
@@ -284,7 +313,7 @@ local validate_progress = function()
     for ln = 1, #lines do
         local line = lines[ln]
         if get_task_content_start_col(line) then
-            local progress, has_children, incomplete_count = calculate_progress(lines, ln)
+            local progress, has_children, _ , _ = calculate_progress(lines, ln)
             if has_children then
                 if progress == 1.0 then
                     mark_line_checked(bufnr, { ln, 0 })
@@ -328,7 +357,7 @@ vim.keymap.set("n", "<C-m>", function()
 end, { noremap = true, silent = true })
 
 -- autocommand to update progress on buffer open
-vim.api.nvim_create_autocmd({ "BufReadPost", "TextChangedI", "InsertLeave" }, {
+vim.api.nvim_create_autocmd({ "BufReadPost", "InsertLeave", "BufWritePost" }, {
     pattern = "*.md",
     callback = function()
         validate_progress()
