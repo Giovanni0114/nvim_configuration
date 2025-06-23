@@ -54,6 +54,8 @@ local function is_marked_done(line)
     local state = line:match("%[(.)%]")
     if state == "x" then
         return true
+    elseif state == "_" then
+        return true
     elseif state == " " then
         return false
     end
@@ -256,7 +258,7 @@ local update_progress = function()
         if get_task_content_start_col(line) then
             local progress, has_children, incomplete_count = calculate_progress(lines, ln)
             if has_children then
-                local display_text = string.format("[ 󰱒 %.1f%% ]", progress * 100)
+                local display_text = string.format(" [ 󰱒 %.1f%% ] ", progress * 100)
                 local hl_group = "Comment"
                 vim.api.nvim_buf_set_extmark(bufnr, progress_ns, ln - 1, -1, {
                     virt_text = { { display_text, hl_group } },
@@ -316,6 +318,9 @@ local toggle_line = function(bufnr, cursor)
     update_progress()
 end
 
+--------------------------------------------------------------------------------
+
+-- Key mappings for toggling checkboxes in markdown files
 vim.keymap.set("n", "<C-m>", function()
     local bufnr = vim.api.nvim_buf_get_number(0)
     local cursor = vim.api.nvim_win_get_cursor(0)
@@ -323,17 +328,10 @@ vim.keymap.set("n", "<C-m>", function()
 end, { noremap = true, silent = true })
 
 -- autocommand to update progress on buffer open
-vim.api.nvim_create_autocmd({ "BufReadPost", "CompleteChanged" }, {
-    pattern = "*.md",
-    callback = function()
-        update_progress()
-    end,
-})
-
--- autocommand to update progress on buffer open
-vim.api.nvim_create_autocmd("CompleteChanged", {
+vim.api.nvim_create_autocmd({ "BufReadPost", "TextChangedI", "InsertLeave" }, {
     pattern = "*.md",
     callback = function()
         validate_progress()
+        update_progress()
     end,
 })
