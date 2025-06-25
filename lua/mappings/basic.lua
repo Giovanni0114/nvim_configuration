@@ -26,7 +26,6 @@ vim.keymap.set("n", "<A-,>", "<cmd>bprevious<CR>")
 vim.keymap.set('n', '<leader>e', '<cmd>Explore<CR>')
 
 -- Windows
-
 vim.keymap.set('n', '<C-h>', '<C-w><C-h>', { desc = 'Move focus to the left window' })
 vim.keymap.set('n', '<C-Left>', '<C-w><C-h>', { noremap = true, silent = true })
 

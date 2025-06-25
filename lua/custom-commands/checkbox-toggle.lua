@@ -1,11 +1,36 @@
-local checked_character = "x"
 
-local checked_checkbox = "%[" .. checked_character .. "%]"
+local checked_checkbox   = "%[x%]"
 local unchecked_checkbox = "%[ %]"
 
--- checkbock may also contains a characters / and ~ and script should ignore such lines
-local line_contains_a_checked_checkbox = function(line)
-    return line:find(checked_checkbox)
+local states = {
+    ["x"] = "checked",
+    [" "] = "unchecked",
+    ["-"] = "todo",
+    ["/"] = "warn",
+    ["~"] = "error",
+    ["_"] = "abort",
+}
+
+local states_icons = {
+    ["checked"]   = "󰱒 ",
+    ["unchecked"] = "󰄱 ",
+    ["todo"]      = "󰥔 ",
+    ["warn"]      = " ",
+    ["error"]     = "󰜺 ",
+    ["abort"]     = "󰚃 "
+}
+
+local state_order = {
+    "checked",
+    "unchecked",
+    "todo",
+    "warn",
+    "error",
+    "abort"
+}
+
+local is_count_complete = function(count)
+    return count["unchecked"] and count["unchecked"] == 0
 end
 
 local line_contains_unchecked = function(line)
@@ -17,11 +42,8 @@ local line_contains_checked = function(line)
 end
 
 local line_with_checkbox = function(line)
-    -- return not line_contains_a_checked_checkbox(line) and not line_contains_an_unchecked_checkbox(line)
     return line:find("^%s*- " .. checked_checkbox)
         or line:find("^%s*- " .. unchecked_checkbox)
-        or line:find("^%s*%d%. " .. checked_checkbox)
-        or line:find("^%s*%d%. " .. unchecked_checkbox)
 end
 
 local checkbox = {
@@ -32,43 +54,18 @@ local checkbox = {
     uncheck = function(line)
         return line:gsub(checked_checkbox, unchecked_checkbox, 1)
     end,
-
-    make_checkbox = function(line)
-        if not line:match("^%s*-%s.*$") and not line:match("^%s*%d%s.*$") then
-            -- "xxx" -> "- [ ] xxx"
-            return line:gsub("(%S+)", "- [ ] %1", 1)
-        else
-            -- "- xxx" -> "- [ ] xxx", "3. xxx" -> "3. [ ] xxx"
-            return line:gsub("(%s*- )(.*)", "%1[ ] %2", 1):gsub("(%s*%d%. )(.*)", "%1[ ] %2", 1)
-        end
-    end,
 }
 
 
 local progress_ns = vim.api.nvim_create_namespace("todo_progress_namespace")
 
--- Checks if a task is marked as done (e.g., "[x]").
--- @param line (string): The line content.
--- @return (boolean|nil): True if done, false if not, nil if not a valid task checkbox.
-local function is_marked_done(line)
+-- Checks if a task is marked as special (e.g., "[/]", "[~]", "[_]").
+local function is_marked(line)
     local state = line:match("%[(.)%]")
-    if state == "x" then
-        return true
-    elseif state == "_" then
-        return true
-    elseif state == " " then
-        return false
-    end
-    return nil
-end
-
--- Checks if a task is marked as done (e.g., "[x]").
--- @param line (string): The line content.
--- @return (boolean|nil): True if done, false if not, nil if not a valid task checkbox.
-local function is_marked_aborted (line)
-    local state = line:match("%[(.)%]")
-    if state == "_" then
-        return true
+    for key, value in pairs(states) do
+        if state == key then
+            return value
+        end
     end
     return nil
 end
@@ -86,78 +83,25 @@ local function is_header_line(line)
     return nil
 end
 
--- Calculates the indentation level of a list marker (`*`, `1.`, etc.) by counting leading spaces.
+-- Calculates the indentation level of a list marker (`*`) by counting leading spaces.
 -- @param line (string): The line content.
 -- @return (number|nil): The indentation level, or nil if not a list item.
 local function get_list_item_indent(line)
     if not line then
         return nil
     end
-    -- Matches both ordered and unordered list markers at the start of the line.
-    local indent_str = line:match("^(%s*)[%*%-+]%s") or line:match("^(%s*)%d+[.%)%)]%s")
+    local indent_str = line:match("^(%s*)[%*%-+]%s")
     if indent_str then
         return #indent_str
     end
     return is_header_line(line)
 end
 
--- Finds the starting column of the text content in a plain markdown list item.
--- @param line (string): The line content.
--- @return (number|nil): The 1-based column number, or nil if not a list item.
-local function get_list_marker_info(line)
-    if not line then
-        return nil
-    end
-    local _, match_end = line:find("^%s*[%*%-+]%s+") -- Unordered
-    if match_end then
-        return match_end + 1
-    end
-    _, match_end = line:find("^%s*%d+[.%)%)]%s+") -- Ordered
-    if match_end then
-        return match_end + 1
-    end
-    return nil
-end
-
 
 local function get_task_content_start_col(line)
     if not line then
         return nil
     end
-    -- Matches unordered lists: "* [ ]"
-    local indent_str = line:match("^(%s*)[%*%-+]%s*%[.%]%s")
-    if indent_str then
-        return #indent_str
-    end
-    -- Matches ordered lists: "1. [ ]"
-    indent_str = line:match("^(%s*)%d+[.%)%)]%s*%[.%]%s")
-    if indent_str then
-        return #indent_str
-    end
-    return nil
-end
-
-local function get_list_marker_info(line)
-    if not line then
-        return nil
-    end
-    local _, match_end = line:find("^%s*[%*%-+]%s+") -- Unordered
-    if match_end then
-        return match_end + 1
-    end
-    _, match_end = line:find("^%s*%d+[.%)%)]%s+") -- Ordered
-    if match_end then
-        return match_end + 1
-    end
-    return nil
-end
-
-
-local function get_task_content_start_col(line)
-    if not line then
-        return nil
-    end
-    -- Matches unordered lists: "* [ ]"
     local indent_str = line:match("^(%s*)[%*%-]%s*%[.%]%s")
     if indent_str then
         return #indent_str
@@ -166,10 +110,6 @@ local function get_task_content_start_col(line)
     return is_header_line(line)
 end
 
--- Recursively calculates progress and counts incomplete items for a task.
--- @param lines (table): The buffer lines.
--- @param start_ln (number): The 1-based line number of the task to analyze.
--- @return (number, boolean, number): A tuple with progress (0.0-1.0), a boolean for has_children, and the count of incomplete sub-tasks.
 local function calculate_progress(lines, start_ln)
     local line = lines[start_ln]
     if not line then
@@ -185,11 +125,12 @@ local function calculate_progress(lines, start_ln)
         return 0, false, 0
     end
 
-    local children_progress_total = 0
+    local count = {}
+    for key, value in pairs(states) do
+        count[value] = 0
+    end
+
     local children_count = 0
-    local total_incomplete_count = 0
-    local total_aborted_count = 0
-    local total_complete_count = 0
     local direct_child_bound = nil
 
     for ln = start_ln + 1, #lines do
@@ -208,21 +149,22 @@ local function calculate_progress(lines, start_ln)
 
             if child_bound == direct_child_bound then
                 children_count = children_count + 1
-                local child_progress, _, child_incomplete, child_aborted, child_complete = calculate_progress(lines, ln)
-                children_progress_total = children_progress_total + child_progress
-                total_incomplete_count = total_incomplete_count + child_incomplete
-                total_complete_count = total_complete_count + child_complete
-                total_aborted_count = total_aborted_count + child_aborted
+                local child_count, _ = calculate_progress(lines, ln)
+                for key, value in pairs(child_count) do
+                    count[key] = count[key] + value
+                end
             end
         end
     end
 
     if children_count > 0 then
-        return children_progress_total / children_count, true, total_incomplete_count, total_aborted_count, total_complete_count
+        return count, true
     else
-        local done = is_marked_done(line)
-        local aborted = is_marked_aborted(line)
-        return done and 1.0 or 0.0, false, done and 0 or 1, aborted and 1 or 0, done and 1 or 0
+        local mark = is_marked(line)
+        if mark then
+            count[mark] = count[mark] + 1
+        end
+        return count, false
     end
 end
 
@@ -272,22 +214,28 @@ local update_progress = function()
     for ln = 1, #lines do
         local line = lines[ln]
         if get_task_content_start_col(line) then
-            local progress, has_children, incomplete_count, aborted_count, complete_count = calculate_progress(lines, ln)
+            local count, has_children = calculate_progress(lines, ln)
             if has_children then
+                if is_count_complete(count) then
+                    mark_line_checked(bufnr, { ln, 0 })
+                else
+                    mark_line_unchecked(bufnr, { ln, 0 })
+                end
+
+                local sum_count = 0
+                for _, value in pairs(count) do
+                    sum_count = sum_count + value
+                end
+                progress = sum_count > 0 and count["checked"] / sum_count or 0.0
+
                 local display_text = string.format(" [%.1f%%]", progress * 100)
 
-                if complete_count > 0 then 
-                    display_text = display_text .. string.format(" 󰱒 %d", complete_count)
+                -- for key, value in pairs(states_icons) do
+                for _, key in ipairs(state_order) do
+                    if count[key] and count[key] > 0 then
+                        display_text = display_text .. string.format(" %s%d", states_icons[key], count[key])
+                    end
                 end
-
-                if incomplete_count > 0 then 
-                    display_text = display_text .. string.format(" 󰄱 %d", incomplete_count)
-                end
-
-                if aborted_count > 0 then
-                    display_text = display_text .. string.format(" 󰚃 %d", aborted_count)
-                end
-
                 display_text = display_text .. " "
 
                 local hl_group = "Comment"
@@ -295,33 +243,6 @@ local update_progress = function()
                     virt_text = { { display_text, hl_group } },
                     virt_text_pos = "eol",
                 })
-            end
-        end
-    end
-end
-
-local validate_progress = function()
-    local bufnr = vim.api.nvim_get_current_buf()
-    lines = vim.api.nvim_buf_get_lines(bufnr, 0, -1, false)
-
-    -- If no tasks exist in the file, skip the rest of the checking
-    local content = table.concat(lines, "\n")
-    if not content:match("%[%s%]") and not content:match("%[x%]") then
-        vim.api.nvim_buf_clear_namespace(bufnr, progress_ns, 0, -1)
-        return
-    end
-    vim.api.nvim_buf_clear_namespace(bufnr, progress_ns, 0, -1)
-
-    for ln = 1, #lines do
-        local line = lines[ln]
-        if get_task_content_start_col(line) then
-            local progress, has_children, _ , _ = calculate_progress(lines, ln)
-            if has_children then
-                if progress == 1.0 then
-                    mark_line_checked(bufnr, { ln, 0 })
-                else
-                    mark_line_unchecked(bufnr, { ln, 0 })
-                end
             end
         end
     end
@@ -345,7 +266,6 @@ local toggle_line = function(bufnr, cursor)
     vim.api.nvim_buf_set_lines(bufnr, start_line, start_line + 1, false, { new_line })
     vim.api.nvim_win_set_cursor(0, { cursor[1] + 1, cursor[2] })
 
-    validate_progress()
     update_progress()
 end
 
@@ -361,8 +281,5 @@ end, { noremap = true, silent = true })
 -- autocommand to update progress on buffer open
 vim.api.nvim_create_autocmd({ "BufReadPost", "InsertLeave", "BufWritePost" }, {
     pattern = "*.md",
-    callback = function()
-        validate_progress()
-        update_progress()
-    end,
+    callback = update_progress
 })
