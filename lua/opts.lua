@@ -76,3 +76,5 @@ vim.o.jumpoptions = "stack"
 vim.o.foldmethod = "manual"
 vim.o.foldcolumn = "1"
 vim.o.viewoptions = "folds,cursor"
+
+vim.o.virtualedit = "all"
