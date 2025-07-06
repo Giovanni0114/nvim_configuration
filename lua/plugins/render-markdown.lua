@@ -16,7 +16,7 @@ return {
                 scope_highlight = "RenderMarkdownChecked"
             },
             custom = {
-                todo  = { raw = "[-]", rendered = "󰥔 ", highlight = "RenderMarkdownTodo", scope_highlight = nil },
+                todo  = { raw = "[=]", rendered = "󰥔 ", highlight = "RenderMarkdownTodo", scope_highlight = nil },
                 warn  = { raw = "[/]", rendered = " ", highlight = "RenderMarkdownWarn", scope_highlight = "RenderMarkdownWarn" },
                 error = { raw = "[~]", rendered = "󰜺 ", highlight = "RenderMarkdownError", scope_highlight = "RenderMarkdownError" },
                 abort = { raw = "[_]", rendered = "󰚃 ", highlight = "RenderMarkdownHtmlComment", scope_highlight = "@markup.strikethrough" }

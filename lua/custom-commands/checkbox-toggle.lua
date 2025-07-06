@@ -1,17 +1,16 @@
+local checked_checkbox        = "%[x%]"
+local unchecked_checkbox      = "%[ %]"
 
-local checked_checkbox   = "%[x%]"
-local unchecked_checkbox = "%[ %]"
-
-local states = {
+local states                  = {
     ["x"] = "checked",
     [" "] = "unchecked",
-    ["-"] = "todo",
+    ["="] = "todo",
     ["/"] = "warn",
     ["~"] = "error",
     ["_"] = "abort",
 }
 
-local states_icons = {
+local states_icons            = {
     ["checked"]   = "󰱒 ",
     ["unchecked"] = "󰄱 ",
     ["todo"]      = "󰥔 ",
@@ -20,7 +19,7 @@ local states_icons = {
     ["abort"]     = "󰚃 "
 }
 
-local state_order = {
+local state_order             = {
     "checked",
     "unchecked",
     "todo",
@@ -29,24 +28,41 @@ local state_order = {
     "abort"
 }
 
-local is_count_complete = function(count)
+local checkbox_for_state      = function(state)
+    for key, value in pairs(states) do
+        if value == state then
+            return "%[" .. key .. "%]"
+        end
+    end
+    return nil
+end
+
+local is_count_complete       = function(count)
     return count["unchecked"] and count["unchecked"] == 0
+end
+
+local line_contains_state     = function(line, state)
+    local checkbox = checkbox_for_state(state)
+    if not checkbox then
+        return false
+    end
+    return line:find("^%s*%- " .. checkbox)
 end
 
 local line_contains_unchecked = function(line)
     return line:find(unchecked_checkbox)
 end
 
-local line_contains_checked = function(line)
+local line_contains_checked   = function(line)
     return line:find(checked_checkbox)
 end
 
-local line_with_checkbox = function(line)
+local line_with_checkbox      = function(line)
     return line:find("^%s*- " .. checked_checkbox)
         or line:find("^%s*- " .. unchecked_checkbox)
 end
 
-local checkbox = {
+local checkbox                = {
     check = function(line)
         return line:gsub(unchecked_checkbox, checked_checkbox, 1)
     end,
@@ -54,6 +70,15 @@ local checkbox = {
     uncheck = function(line)
         return line:gsub(checked_checkbox, unchecked_checkbox, 1)
     end,
+
+    toggle_check = function(line)
+        if line:find(unchecked_checkbox) then
+            return line:gsub(unchecked_checkbox, checked_checkbox, 1)
+        elseif line:find(checked_checkbox) then
+            return line:gsub(checked_checkbox, unchecked_checkbox, 1)
+        end
+        return line
+    end
 }
 
 
@@ -174,9 +199,9 @@ local mark_line_unchecked = function(bufnr, cursor)
 
     local new_line = ""
 
-    if not line_with_checkbox(current_line) or line_contains_unchecked(current_line) then
+    if not line_with_checkbox(current_line) or line_contains_state(current_line, "unchecked") then
         return
-    elseif line_contains_checked(current_line) then
+    elseif line_contains_state(current_line, "checked") then
         new_line = checkbox.uncheck(current_line)
     end
 
@@ -189,9 +214,9 @@ local mark_line_checked = function(bufnr, cursor)
 
     local new_line = ""
 
-    if not line_with_checkbox(current_line) or line_contains_checked(current_line) then
+    if not line_with_checkbox(current_line) or line_contains_state(current_line, "checked") then
         return
-    elseif line_contains_unchecked(current_line) then
+    elseif line_contains_state(current_line, "unchecked") then
         new_line = checkbox.check(current_line)
     end
 
@@ -223,14 +248,15 @@ local update_progress = function()
                 end
 
                 local sum_count = 0
-                for _, value in pairs(count) do
-                    sum_count = sum_count + value
+                for state, value in pairs(count) do
+                    if state ~= "abort" then 
+                        sum_count = sum_count + value
+                    end
                 end
                 progress = sum_count > 0 and count["checked"] / sum_count or 0.0
 
                 local display_text = string.format(" [%.1f%%]", progress * 100)
 
-                -- for key, value in pairs(states_icons) do
                 for _, key in ipairs(state_order) do
                     if count[key] and count[key] > 0 then
                         display_text = display_text .. string.format(" %s%d", states_icons[key], count[key])
@@ -254,22 +280,54 @@ local toggle_line = function(bufnr, cursor)
 
     local new_line = ""
 
-    if not line_with_checkbox(current_line) then
-        -- new_line = checkbox.make_checkbox(current_line)
-        return
-    elseif line_contains_unchecked(current_line) then
-        new_line = checkbox.check(current_line)
-    elseif line_contains_checked(current_line) then
-        new_line = checkbox.uncheck(current_line)
+    new_line = checkbox.toggle_check(current_line)
+
+    vim.api.nvim_buf_set_lines(bufnr, start_line, start_line + 1, false, { new_line })
+
+    update_progress()
+
+    if cursor[1] < vim.api.nvim_buf_line_count(bufnr) then
+        vim.api.nvim_win_set_cursor(0, { cursor[1] + 1, cursor[2] })
+    end
+end
+
+local cycle_next_char = function(bufnr, cursor)
+    local start_line = cursor[1] - 1
+    local current_line = vim.api.nvim_buf_get_lines(bufnr, start_line, start_line + 1, false)[1] or ""
+
+    local new_line = ""
+
+    local current_state = is_marked(current_line)
+    local current_character = current_line:match("%[(.)%]")
+
+    if not current_state then
+        new_line = current_line
+    else
+        local next_state_index = nil
+        for i, state in ipairs(state_order) do
+            if current_state == state then
+                next_state_index = (i % #state_order) + 1
+                break
+            end
+        end
+        print("Current state: " .. current_state, "Next state index: " .. (next_state_index or "nil"))
+        if next_state_index then
+            new_line = current_line:gsub(checkbox_for_state(current_state),
+                checkbox_for_state(state_order[next_state_index]))
+        end
     end
 
     vim.api.nvim_buf_set_lines(bufnr, start_line, start_line + 1, false, { new_line })
-    vim.api.nvim_win_set_cursor(0, { cursor[1] + 1, cursor[2] })
-
     update_progress()
 end
 
 --------------------------------------------------------------------------------
+
+-- autocommand to update progress on buffer open
+vim.api.nvim_create_autocmd({ "BufReadPost", "InsertLeave", "BufWritePost" }, {
+    pattern = "*.md",
+    callback = update_progress
+})
 
 -- Key mappings for toggling checkboxes in markdown files
 vim.keymap.set("n", "<C-m>", function()
@@ -278,8 +336,10 @@ vim.keymap.set("n", "<C-m>", function()
     toggle_line(bufnr, cursor)
 end, { noremap = true, silent = true })
 
--- autocommand to update progress on buffer open
-vim.api.nvim_create_autocmd({ "BufReadPost", "InsertLeave", "BufWritePost" }, {
-    pattern = "*.md",
-    callback = update_progress
-})
+
+-- Key mappings for toggling checkboxes in markdown files
+vim.keymap.set("n", "<C-\\>", function()
+    local bufnr = vim.api.nvim_buf_get_number(0)
+    local cursor = vim.api.nvim_win_get_cursor(0)
+    cycle_next_char(bufnr, cursor)
+end, { noremap = true, silent = true })
