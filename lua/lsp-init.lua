@@ -8,5 +8,7 @@ vim.lsp.enable({ "lua-ls" })
 vim.lsp.enable({ "clangd" })
 vim.lsp.enable({ "pylsp" })
 vim.lsp.enable({ "rust" })
+vim.lsp.enable({ "html" })
+vim.lsp.enable({ "json" })
 
 vim.diagnostic.config({ virtual_text = true })
