@@ -249,7 +249,7 @@ local update_progress = function()
 
                 local sum_count = 0
                 for state, value in pairs(count) do
-                    if state ~= "abort" then 
+                    if state ~= "abort" then
                         sum_count = sum_count + value
                     end
                 end
@@ -310,7 +310,6 @@ local cycle_next_char = function(bufnr, cursor)
                 break
             end
         end
-        print("Current state: " .. current_state, "Next state index: " .. (next_state_index or "nil"))
         if next_state_index then
             new_line = current_line:gsub(checkbox_for_state(current_state),
                 checkbox_for_state(state_order[next_state_index]))
