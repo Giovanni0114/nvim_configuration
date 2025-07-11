@@ -35,7 +35,7 @@ return {
             mapping = cmp.mapping.preset.insert {
                 ['<Tab>'] = cmp.mapping.select_next_item(),
                 ['<S-Tab>'] = cmp.mapping.select_prev_item(),
-                ['<C-Enter>'] = cmp.mapping.confirm { select = true },
+                ['<Enter>'] = cmp.mapping.confirm { },
                 ['<C-Space>'] = cmp.mapping.complete {},
             },
 
