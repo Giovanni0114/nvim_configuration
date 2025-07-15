@@ -13,6 +13,7 @@ return {
         'hrsh7th/cmp-nvim-lsp',
         'hrsh7th/cmp-path',
         'hrsh7th/cmp-buffer',
+        'uga-rosa/cmp-dictionary',
         "vim-dadbod-completion"
     },
 
@@ -35,7 +36,7 @@ return {
             mapping = cmp.mapping.preset.insert {
                 ['<Tab>'] = cmp.mapping.select_next_item(),
                 ['<S-Tab>'] = cmp.mapping.select_prev_item(),
-                ['<Enter>'] = cmp.mapping.confirm { },
+                ['<Enter>'] = cmp.mapping.confirm {},
                 ['<C-Space>'] = cmp.mapping.complete {},
             },
 
@@ -46,7 +47,15 @@ return {
                 { name = 'buffer' },
                 { name = "vim-dadbod-completion" },
                 { name = 'render-markdown' },
+                {
+                    name = "dictionary",
+                    keyword_length = 4,
+                },
             },
         }
+        require("cmp_dictionary").setup({
+            paths = { "/usr/share/dict/words" },
+            exact_length = 4,
+        })
     end,
 }
