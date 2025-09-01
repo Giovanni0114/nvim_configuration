@@ -19,7 +19,7 @@ vim.keymap.set("v", "<", "<gv")
 
 -- Buffers
 vim.keymap.set('n', '<A-c>', '<C-^>')
-vim.keymap.set("n", "<A-S-c>", "<cmd>bdelete!<CR>")
+-- vim.keymap.set("n", "<A-S-c>", "<cmd>bdelete!<CR>") Changed to BetterBdelete from custom-commands/better-bdelete.lua
 
 vim.keymap.set('n', '<C-PageDown>', '<cmd>cn<CR>')
 vim.keymap.set('n', '<C-PageUp>', '<cmd>cp<CR>')
