@@ -3,7 +3,7 @@ set -euo pipefail
 
 FAIL_ON_WARNINGS="${FAIL_ON_WARNINGS:-false}"
 REPO=/workspace
-ART_DIR="$REPO/.ci-artifacts"
+ART_DIR=.ci-artifacts
 mkdir -p "$ART_DIR"
 
 mkdir -p "$XDG_CONFIG_HOME"
