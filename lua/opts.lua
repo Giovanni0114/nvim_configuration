@@ -78,3 +78,5 @@ vim.o.foldcolumn = "1"
 vim.o.viewoptions = "folds,cursor"
 
 vim.o.virtualedit = "all"
+
+vim.o.wrap = false
