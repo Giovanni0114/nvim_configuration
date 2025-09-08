@@ -7,8 +7,9 @@ return {
     },
     opts = {
         outline_window = {
-            position = "right", -- Position of the outline window
+            split_command = "below 15split", -- Command to use to split the window
             width = 15, -- Width of the outline window
+            height = 50,     -- Percentage or integer of lines
             show_cursorline = false,
         }
     },
