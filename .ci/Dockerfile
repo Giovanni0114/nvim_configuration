@@ -12,9 +12,9 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     xxd wamerican \
     ripgrep fd-find jq \
     build-essential \
-    && rm -rf /var/lib/apt/lists/*
+    && rm -rf /var/lib/apt/lists/*;
 
-RUN locale-gen en_US.UTF-8
+RUN locale-gen en_US.UTF-8;
 ENV LANG=en_US.UTF-8
 ENV LC_ALL=en_US.UTF-8
 
@@ -30,12 +30,12 @@ RUN set -eux; \
   tar xzf nvim.tar.gz; \
   mv nvim-linux-x86_64 /opt/nvim; \
   ln -s /opt/nvim/bin/nvim /usr/local/bin/nvim; \
-  nvim --version
+  nvim --version;
 
-RUN mkdir -p /workspace/.ci-artifacts && chmod -R 777 /workspace/.ci-artifacts
+RUN mkdir -p /workspace/.ci-artifacts && chmod -R 777 /workspace/.ci-artifacts;
 
 # non-root home and working dir
-RUN useradd -m ci
+RUN useradd -m ci;
 USER ci
 WORKDIR /home/ci
 
@@ -47,5 +47,5 @@ ENV XDG_CACHE_HOME=/home/ci/.cache
 
 USER root
 COPY .ci/run_health.sh /ci/run_health.sh
-RUN chmod +x /ci/run_health.sh
+RUN chmod +x /ci/run_health.sh;
 USER ci
