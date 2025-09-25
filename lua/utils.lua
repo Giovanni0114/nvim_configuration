@@ -27,4 +27,22 @@ M.load_scripts = function(raw)
     load_scripts_from_path(folder, raw)
 end
 
+M.load_filenames_from_path = function(folder)
+    names = {}
+    local iter, err = vim.loop.fs_scandir(folder)
+    if not iter then
+        print("Error: Unable to scan directory " .. folder .. ": " .. err)
+        return
+    end
+    while true do
+        local file = vim.loop.fs_scandir_next(iter)
+        if not file then break end
+        if file:match("^(.*)%.lua$") then
+            local module = file:sub(1, -5)
+            table.insert(names, module)
+        end
+    end
+    return names
+end
+
 return M
