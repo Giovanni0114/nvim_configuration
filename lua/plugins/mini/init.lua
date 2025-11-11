@@ -8,9 +8,8 @@ return { -- Collection of various small independent plugins/modules
         local statusline = require 'mini.statusline'
         statusline.setup()
 
-        ---@diagnostic disable-next-line: duplicate-set-field
         statusline.section_location = function()
-            return ''
+            return require('copilot').setup_done and ' on' or ''
         end
     end,
 }
