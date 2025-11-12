@@ -28,7 +28,11 @@ return {
                         ["il"] = "@loop.inner",
                         ["al"] = "@loop.outer",
                     },
-                    selection_modes = 'V';
+                    selection_modes = {
+                        ["@class.outer"] = 'V',
+                        ["@function.outer"] = 'V',
+                        ["@loop.outer"] = 'V',
+                    },
                     include_surrounding_whitespace = false,
                 },
             },
