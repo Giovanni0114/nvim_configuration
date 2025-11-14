@@ -41,7 +41,8 @@ vim.keymap.set('n', '<leader>tj', builtin.jumplist, { desc = '[T]elescope [J]ump
 vim.keymap.set('n', '<leader>tk', builtin.keymaps, { desc = '[T]elescope [K]eymaps' })
 vim.keymap.set('n', '<leader>tm', builtin.marks, { desc = '[T]elescope [M]arks)' })
 vim.keymap.set('n', '<leader>tr', builtin.lsp_references, { desc = '[T]elescope [R]esume' })
-vim.keymap.set('n', '<leader>ts', builtin.builtin, { desc = '[T]elescope [S]elect Telescope' })
+vim.keymap.set('n', '<leader>tt', builtin.builtin, { desc = '[T]elescope [S]elect Telescope' })
+vim.keymap.set('n', '<leader>ts', builtin.git_status, { desc = '[T]elescope Git [S]tatus' })
 vim.keymap.set('n', '<leader>tw', builtin.grep_string, { desc = '[T]elescope current [W]ord' })
 
 
