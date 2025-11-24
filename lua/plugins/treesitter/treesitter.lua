@@ -7,7 +7,7 @@ return {
             -- Autoinstall languages that are not installed
             auto_install = true,
             highlight = { enable = true,
-                disable = { "diff" },
+                disable = { "diff", "csv" },
             },
             indent = { enable = true },
         }

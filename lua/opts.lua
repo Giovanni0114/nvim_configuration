@@ -80,3 +80,5 @@ vim.o.viewoptions = "folds,cursor"
 vim.o.virtualedit = "all"
 
 vim.o.wrap = false
+
+vim.g.disable_rainbow_key_mappings = true
