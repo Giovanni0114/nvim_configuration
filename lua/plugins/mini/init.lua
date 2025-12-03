@@ -4,6 +4,7 @@ return { -- Collection of various small independent plugins/modules
         -- https://github.com/echasnovski/mini.nvim
         require('mini.ai').setup { n_lines = 500 }
         require('mini.surround').setup()
+        require('mini.align').setup()
 
         local statusline = require 'mini.statusline'
         statusline.setup()
