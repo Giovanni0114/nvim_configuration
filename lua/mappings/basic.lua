@@ -33,3 +33,7 @@ vim.api.nvim_set_keymap('n', '<A-Up>', ':resize +2<CR>', { noremap = true, silen
 vim.api.nvim_set_keymap('n', '<A-Down>', ':resize -2<CR>', { noremap = true, silent = true })
 vim.api.nvim_set_keymap('n', '<A-Left>', ':vertical resize +2<CR>', { noremap = true, silent = true })
 vim.api.nvim_set_keymap('n', '<A-Right>', ':vertical resize -2<CR>', { noremap = true, silent = true })
+
+
+-- quick shortcut to start writing (right alt usage)
+vim.keymap.set('n', 'ć', 'ciw')
