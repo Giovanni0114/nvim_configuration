@@ -13,7 +13,7 @@ return {
     },
     keys = {
         {
-            "<c-.>",
+            "<C-.>",
             function() require("sidekick.cli").toggle() end,
             desc = "Sidekick Toggle",
             mode = { "n", "t", "i", "x" },
@@ -53,7 +53,7 @@ return {
             desc = "Send Visual Selection",
         },
         {
-            "<leader>ap",
+            "<leader>aA",
             function() require("sidekick.cli").prompt() end,
             mode = { "n", "x" },
             desc = "Sidekick Select Prompt",
