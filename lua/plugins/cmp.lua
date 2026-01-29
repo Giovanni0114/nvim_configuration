@@ -8,7 +8,11 @@ return {
             build = (function()
                 return 'make install_jsregexp'
             end)(),
+            dependencies = {
+                'rafamadriz/friendly-snippets',
+            },
         },
+        'benfowler/telescope-luasnip.nvim',
         'saadparwaiz1/cmp_luasnip',
         'hrsh7th/cmp-nvim-lsp',
         'hrsh7th/cmp-path',
@@ -22,6 +26,9 @@ return {
         local cmp = require 'cmp'
         local luasnip = require 'luasnip'
         luasnip.config.setup {}
+
+        require("luasnip.loaders.from_vscode").lazy_load()
+        require("luasnip.loaders.from_lua").lazy_load({ paths = { vim.fn.stdpath("config") .. "/snippets" } })
 
         cmp.setup {
             snippet = {
