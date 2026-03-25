@@ -2,6 +2,11 @@ return {
     "folke/sidekick.nvim",
     opts = {
         cli = {
+            win = {
+                keys = {
+                    prompt = { "<c-q>", "prompt", mode = "t", desc = "insert prompt or context" },
+                }
+            },
             mux = {
                 backend = "tmux",
                 enabled = true,
@@ -12,12 +17,6 @@ return {
         }
     },
     keys = {
-        {
-            "<C-.>",
-            function() require("sidekick.cli").toggle() end,
-            desc = "Sidekick Toggle",
-            mode = { "n", "t", "i", "x" },
-        },
         {
             "<leader>aa",
             function() require("sidekick.cli").toggle() end,
