@@ -4,7 +4,6 @@ vim.keymap.set('n', ']d', vim.diagnostic.goto_next, { desc = 'Go to next [D]iagn
 
 vim.keymap.set('n', '<leader>de', vim.diagnostic.open_float, { desc = 'Show [D]iagnostic [E]rror messages' })
 vim.keymap.set('n', '<leader>dq', vim.diagnostic.setloclist, { desc = 'Open [D]iagnostic [Q]uickfix list' })
-vim.keymap.set('n', 'K', require("pretty_hover").hover , { desc = 'pretty hover' })
 
 
 vim.keymap.set('n', '<leader>dt', function()

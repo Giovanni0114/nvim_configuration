@@ -37,3 +37,7 @@ vim.api.nvim_set_keymap('n', '<A-Right>', ':vertical resize -2<CR>', { noremap =
 
 -- quick shortcut to start writing (right alt usage)
 vim.keymap.set('n', 'ć', 'ciw')
+
+vim.cmd("packadd nvim.undotree")
+vim.keymap.set("n", "<leader>u", require("undotree").open)
+

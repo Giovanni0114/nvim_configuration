@@ -327,4 +327,3 @@ vim.api.nvim_create_autocmd({ "BufReadPost", "InsertLeave", "BufWritePost" }, {
     pattern = "*.md",
     callback = update_progress
 })
-

@@ -1,3 +1,5 @@
+vim.pack.add({ 'https://github.com/zbirenbaum/copilot.lua' })
+
 vim.keymap.set("n", "<leader>ac", function()
     require("copilot").setup({
         suggestion = {
@@ -12,14 +14,7 @@ vim.keymap.set("n", "<leader>ac", function()
                 dismiss = "<A-[>",
             },
         },
-        copilot_model = "gpt-4o-copilot"
+        copilot_model = "gpt-41-copilot"
     })
 end
-, { expr = true, silent = true })
-
-
-return {
-    "zbirenbaum/copilot.lua",
-    lazy = "VeryLazy",
-    cmd = "Copilot",
-}
+, { expr = true, silent = true, desc = "Enable copilot" })

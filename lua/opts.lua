@@ -1,33 +1,20 @@
--- Set <space> as the leader key
---
--- See `:help mapleader`
---  NOTE: Must happen before plugins are loaded (otherwise wrong leader will be used)
-
 vim.g.mapleader = ' '
 vim.g.maplocalleader = ' '
 
 vim.opt.relativenumber = true
+vim.opt.number = true
 vim.opt.linebreak = true
 
 vim.diagnostic.enable(false)
 
--- Enable mouse mode, can be useful for resizing splits for example!
-vim.opt.mouse = 'a'
-
--- Don't show the mode, since it's already in status line
+vim.opt.mouse = 'a' -- Enable mouse mode, can be useful for resizing splits for example!
 vim.opt.showmode = false
-
--- Sync clipboard between OS and Neovim.
---  Remove this option if you want your OS clipboard to remain independent.
---  See `:help 'clipboard'`
 vim.opt.clipboard = 'unnamedplus'
-vim.cmd [[:set number]]
 vim.cmd [[:set path+=**]]
 
 -- Enable break indent
 vim.opt.breakindent = true
 
--- Save undo history
 vim.opt.undofile = true
 
 -- Case-insensitive searching UNLESS \C or capital in search
