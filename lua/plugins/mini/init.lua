@@ -10,7 +10,7 @@ return { -- Collection of various small independent plugins/modules
         statusline.setup()
 
         statusline.section_location = function()
-            return require('copilot').setup_done and ' on' or ''
+            return (require('copilot').setup_done and ' on ' or '') .. '%p%%'
         end
     end,
 }
