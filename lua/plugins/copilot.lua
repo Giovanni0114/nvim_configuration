@@ -12,7 +12,7 @@ vim.keymap.set("n", "<leader>ac", function()
                 dismiss = "<A-[>",
             },
         },
-        copilot_model = "gpt-4o-copilot"
+        copilot_model = "gpt-41-copilot"
     })
 end
 , { expr = true, silent = true })
