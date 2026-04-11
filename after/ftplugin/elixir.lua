@@ -1,0 +1,2 @@
+-- vim.keymap.del('c', 'gd')
+-- vim.keymap.set('n', 'gd', vim.lsp.buf.references)
