@@ -9,5 +9,8 @@ local statusline = require 'mini.statusline'
 statusline.setup()
 
 statusline.section_location = function()
-    return (require('copilot').setup_done and ' on ' or '') .. '%p%%'
+    local is_copilot_enabled = require('copilot').setup_done
+    local is_sidekick_nes_enabled = require('sidekick.nes').enabled
+
+    return ((is_copilot_enabled or is_sidekick_nes_enabled) and ' on ' or '') .. '%p%%'
 end
