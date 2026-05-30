@@ -36,6 +36,7 @@ cmp.setup {
         { name = 'luasnip' },
         { name = 'path' },
         { name = 'buffer' },
+        { name = "vim-dadbod-completion" },
         { name = 'render-markdown' },
         {
             name = "dictionary",

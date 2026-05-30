@@ -1,6 +1,6 @@
 vim.cmd [[nnoremap # <Cmd>let @/='\<'.expand('<cword>').'\>'<bar>set hlsearch<CR>]]
 vim.cmd [[nnoremap <F5> :let _s=@/<Bar>:%s/\s\+$//e<Bar>:let @/=_s<Bar><CR>]]
-vim.keymap.set('n', '<Esc>', '<cmd>nohlsearch<CR>', { desc = "remove highlight selection" })
+vim.keymap.set('n', '<Esc>', '<cmd>nohlsearch<CR>', { desc = "remove highlight selection", nowait = true })
 
 vim.keymap.set('n', '<Tab>', '<cmd>tabNext<CR>')
 
@@ -40,4 +40,3 @@ vim.keymap.set('n', 'ć', 'ciw')
 
 vim.cmd("packadd nvim.undotree")
 vim.keymap.set("n", "<leader>u", require("undotree").open)
-
