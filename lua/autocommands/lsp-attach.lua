@@ -15,7 +15,6 @@ vim.api.nvim_create_autocmd('LspAttach', {
         map('<leader>ca', '<cmd>lua vim.lsp.buf.code_action({ apply = true })<CR>', '[C]ode [A]ction')
         map('<leader>cA', '<cmd>lua require("tiny-code-action").code_action()<CR>', '[C]ode [A]ction')
 
-        -- map('K', vim.lsp.buf.hover, 'Hover Documentation')
         map('gd', vim.lsp.buf.declaration, '[G]oto [D]eclaration')
     end,
 })

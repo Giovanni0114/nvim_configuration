@@ -1,4 +1,7 @@
-vim.pack.add { { src = 'https://github.com/catppuccin/nvim', name = 'catppuccin' } }
+vim.pack.add { 
+    { src = 'https://github.com/catppuccin/nvim', name = 'catppuccin' },
+    { src = 'https://github.com/tiagovla/tokyodark.nvim', name = 'tokyodark' },
+}
 
 require('catppuccin').setup {
   float = { transparent = false, solid = false },
@@ -16,5 +19,13 @@ require('catppuccin').setup {
   },
 }
 
+ vim.pack.add({
+	{
+		src = "https://github.com/rose-pine/neovim",
+		name = "rose-pine",
+	},
+})
+require("rose-pine").setup()
+
 vim.o.background = 'dark'
-vim.cmd.colorscheme 'catppuccin'
+vim.cmd.colorscheme 'rose-pine'
