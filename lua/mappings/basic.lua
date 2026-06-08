@@ -39,3 +39,5 @@ vim.api.nvim_set_keymap('n', '<A-Right>', ':vertical resize -2<CR>', { noremap =
 
 -- quick shortcut to start writing (right alt usage)
 vim.keymap.set('n', 'ć', 'ciw')
+
+vim.keymap.set('x', '<leader>c', [[:!bc<CR>]])
