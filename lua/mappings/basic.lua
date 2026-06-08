@@ -4,6 +4,8 @@ vim.keymap.set('n', '<Esc>', '<cmd>nohlsearch<CR>', { desc = "remove highlight s
 
 vim.keymap.set('n', '<Tab>', '<cmd>tabNext<CR>')
 
+vim.keymap.set('n', '<C-Enter>', '<cmd>wa<CR><cmd>make<CR>')
+
 vim.keymap.set('n', '<leader>cp', function()
     vim.fn.setreg('+', vim.fn.expand('%:p'))
     print('Copied full path to clipboard')
