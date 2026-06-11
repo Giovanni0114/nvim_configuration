@@ -4,7 +4,7 @@ return {
         cli = {
             win = {
                 keys = {
-                    prompt = { "<c-q>", "prompt", mode = "t", desc = "insert prompt or context" },
+                    prompt = { "<C-q>", "prompt", mode = "t", desc = "insert prompt or context" },
                 }
             },
             mux = {
@@ -18,8 +18,9 @@ return {
     },
     keys = {
         {
-            "<leader>aa",
+            "<C-/>",
             function() require("sidekick.cli").toggle() end,
+            mode = { "x", "n", "i", "t" },
             desc = "Sidekick Toggle CLI",
         },
         {
