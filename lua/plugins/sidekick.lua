@@ -7,6 +7,11 @@ return {
                     prompt = { "<C-q>", "prompt", mode = "t", desc = "insert prompt or context" },
                 }
             },
+            tools = {
+                copilot_cave = {
+                    cmd = { "copilot", "--model=auto", "-i" ,"\"Use skill tool to invoke caveman skill, level full.\"" }
+                }
+            },
             mux = {
                 backend = "tmux",
                 enabled = true,
