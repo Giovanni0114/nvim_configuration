@@ -12,5 +12,20 @@ return { -- Collection of various small independent plugins/modules
         statusline.section_location = function()
             return (require('copilot').setup_done and ' on ' or '') .. '%p%%'
         end
+
+        local surround = require('mini.surround')
+        surround.setup({
+            custom_surroundings = {
+                ['l'] = { output = { left = '[](', right = ')' } },
+                ['L'] = { output = { left = '[', right = ']()' } },
+                ['C'] = { output = { left = '```\n', right = '\n```' } },
+                ['c'] = {
+                    output = function()
+                        local lang = MiniSurround.user_input('language for codeblock')
+                        return { left = '```' .. lang .. '\n', right = '\n```' }
+                    end,
+                },
+            },
+        })
     end,
 }
