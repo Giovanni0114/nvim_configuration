@@ -72,7 +72,7 @@ vim.o.termguicolors = true
 vim.o.swapfile = false
 vim.o.jumpoptions = "stack"
 
- -- set foldmethod to manual
+-- set foldmethod to manual
 vim.o.foldmethod = "manual"
 vim.o.foldcolumn = "1"
 vim.o.viewoptions = "folds,cursor"
@@ -82,3 +82,6 @@ vim.o.virtualedit = "all"
 vim.o.wrap = false
 
 vim.g.disable_rainbow_key_mappings = true
+
+vim.o.makeprg = "just"
+
