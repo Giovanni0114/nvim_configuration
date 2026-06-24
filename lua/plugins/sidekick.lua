@@ -28,6 +28,13 @@ return {
             mode = { "x", "n", "i", "t" },
             desc = "Sidekick Toggle CLI",
         },
+
+        {
+            "<C-_>", -- tmux reads <C-/> as <C-_>, lets just work with both
+            function() require("sidekick.cli").toggle() end,
+            mode = { "x", "n", "i", "t" },
+            desc = "Sidekick Toggle CLI",
+        },
         {
             "<leader>as",
             function() require("sidekick.cli").select() end,
