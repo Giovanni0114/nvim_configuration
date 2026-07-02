@@ -2,7 +2,8 @@ vim.cmd [[nnoremap # <Cmd>let @/='\<'.expand('<cword>').'\>'<bar>set hlsearch<CR
 vim.cmd [[nnoremap <F5> :let _s=@/<Bar>:%s/\s\+$//e<Bar>:let @/=_s<Bar><CR>]]
 vim.keymap.set('n', '<Esc>', '<cmd>nohlsearch<CR>', { desc = "remove highlight selection" })
 
-vim.keymap.set('n', '<Tab>', '<cmd>tabNext<CR>')
+vim.keymap.set('n', '<Tab>', '<cmd>tabn<CR>')
+vim.keymap.set('n', '<S-Tab>', '<cmd>tabp<CR>')
 
 vim.keymap.set('n', '<A-Enter>', '<cmd>wa<CR><cmd>make!<CR>')
 
