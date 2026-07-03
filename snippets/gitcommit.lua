@@ -9,4 +9,8 @@ return {
         ls.text_node("Jira: contributes-to "),
         ls.insert_node(1, "TICKET"),
     }),
+    ls.snippet("dependson", {
+        ls.text_node("Depends-On: "),
+        ls.insert_node(1, "LINK"),
+    }),
 }
