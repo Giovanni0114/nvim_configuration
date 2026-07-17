@@ -62,10 +62,10 @@ return {
             },
 
             sources = {
-                { name = 'nvim_lsp',             priority = 10, },
+                { name = 'nvim_lsp' },
                 { name = 'luasnip' },
                 { name = 'path' },
-                { name = 'buffer',               priority = -10, },
+                { name = 'buffer' },
                 { name = "vim-dadbod-completion" },
                 { name = 'render-markdown' },
                 {
@@ -79,9 +79,9 @@ return {
             sorting = {
                 comparators = {
                     priority_comparator,
+                    cmp.config.compare.score,
                     cmp.config.compare.kind,
                     cmp.config.compare.exact,
-                    cmp.config.compare.score,
                 },
             },
         }
