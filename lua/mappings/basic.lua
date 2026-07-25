@@ -1,10 +1,11 @@
 vim.cmd [[nnoremap # <Cmd>let @/='\<'.expand('<cword>').'\>'<bar>set hlsearch<CR>]]
 vim.cmd [[nnoremap <F5> :let _s=@/<Bar>:%s/\s\+$//e<Bar>:let @/=_s<Bar><CR>]]
-vim.keymap.set('n', '<Esc>', '<cmd>nohlsearch<CR>', { desc = "remove highlight selection", nowait = true })
+vim.keymap.set('n', '<Esc>', '<cmd>nohlsearch<CR>', { desc = "remove highlight selection" })
 
-vim.keymap.set('n', '<Tab>', '<cmd>tabNext<CR>')
+vim.keymap.set('n', '<Tab>', '<cmd>tabn<CR>')
+vim.keymap.set('n', '<S-Tab>', '<cmd>tabp<CR>')
 
-vim.keymap.set('n', '<C-Enter>', '<cmd>wa<CR><cmd>make<CR>')
+vim.keymap.set('n', '<A-Enter>', '<cmd>wa<CR><cmd>make!<CR>')
 
 vim.keymap.set('n', '<leader>cp', function()
     vim.fn.setreg('+', vim.fn.expand('%:p'))
@@ -40,5 +41,4 @@ vim.api.nvim_set_keymap('n', '<A-Right>', ':vertical resize -2<CR>', { noremap =
 -- quick shortcut to start writing (right alt usage)
 vim.keymap.set('n', 'ć', 'ciw')
 
-vim.cmd("packadd nvim.undotree")
-vim.keymap.set("n", "<leader>u", require("undotree").open)
+vim.keymap.set('x', '<leader>c', [[:!bc<CR>]])

@@ -27,6 +27,8 @@ opts = {
         right_pad = 1,
         border = "thin",
     }
-}  
+}
 
 require("render-markdown").setup(opts)
+
+vim.keymap.set("n", "<leader>mm", require('render-markdown').toggle, { desc = "Toggle markdown rendering" })
