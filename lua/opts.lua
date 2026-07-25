@@ -69,3 +69,5 @@ vim.o.virtualedit = "all"
 vim.o.wrap = false
 
 vim.g.disable_rainbow_key_mappings = true
+
+vim.o.makeprg = "just"
