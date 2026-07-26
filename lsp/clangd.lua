@@ -1,4 +1,4 @@
 return {
     filetypes = { 'c', 'cpp', 'objc', 'objcpp', 'C' },
-    cmd = { 'clangd', '--clang-tidy', '--offset-encoding=utf-16', '-header-insertion=never' },
+    cmd = { 'clangd', '--clang-tidy', '--offset-encoding=utf-16' },
 }
