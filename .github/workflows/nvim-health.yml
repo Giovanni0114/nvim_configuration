@@ -1,0 +1,55 @@
+name: Nvim Health Check
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+  workflow_dispatch:
+    inputs:
+      neovim_version:
+        description: 'Neovim version: stable | nightly | v0.10.4 (exact tag)'
+        required: false
+        default: 'stable'
+      ubuntu:
+        description: 'Ubuntu base image'
+        required: false
+        default: '22.04'
+      fail_on_warnings:
+        description: 'Treat warnings as failures (true/false)'
+        required: false
+        default: 'false'
+
+jobs:
+  health:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Build CI image
+        run: |
+          docker build \
+            --build-arg UBUNTU=${{ github.event.inputs.ubuntu || '22.04' }} \
+            --build-arg NEOVIM_VERSION=${{ github.event.inputs.neovim_version || 'stable' }} \
+            -t nvim-health:ci \
+            -f .ci/Dockerfile .
+
+      - name: Run health flow
+        run: |
+          docker run --rm \
+            -e FAIL_ON_WARNINGS=${{ github.event.inputs.fail_on_warnings || 'false' }} \
+            -v "$PWD":/workspace \
+            nvim-health:ci \
+            /bin/bash -lc "/ci/run_health.sh"
+
+      - name: Upload health report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: nvim-checkhealth
+          path: |
+            .ci-artifacts/health.txt
+            .ci-artifacts/versions.txt
+            .ci-artifacts/plugin-manager.txt
