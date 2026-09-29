@@ -1,0 +1,7 @@
+Provenance:
+  NEOVIM_VERSION = stable
+  UBUNTU         = 22.04
+  FAIL_ON_WARNINGS = false
+  NVIM_CONFIG    = /home/jjurosze/.config/nvim
+  Runner SHA256  = 4354d5269764d910bbaacb69773d681658bcdb54f6c29ba5ed757ba0e4e18a3d
+  Dockerfile SHA256 = ba1f3f2cf277b59ad621a8cc887a2559f447938a815cae752cfb148405c9436c
