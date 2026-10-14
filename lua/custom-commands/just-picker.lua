@@ -44,18 +44,35 @@ local function just_pick_and_run()
     local actions = require('telescope.actions')
     local action_state = require('telescope.actions.state')
     local previewers = require('telescope.previewers')
+    local RecipePreviewCache = require('custom-commands.recipe-preview-cache')
 
-    local previewer = previewers.new_buffer_previewer {
-        title = 'Recipe',
-        define_preview = function(self, entry)
-            local lines = vim.fn.systemlist({ 'just', '--show', entry.value })
-            if vim.v.shell_error ~= 0 then
-                lines = { 'Could not show recipe: ' .. entry.value }
+    local previewer
+    local previews = RecipePreviewCache.new(recipes, RecipePreviewCache.start_recipe_preview, 2, function(recipe, lines)
+        if previewer and previewer.state and previewer.state.bufname == recipe then
+            local bufnr = previewer.state.bufnr
+            if vim.api.nvim_buf_is_valid(bufnr) then
+                vim.api.nvim_buf_set_lines(bufnr, 0, -1, false, lines)
+                vim.bo[bufnr].filetype = 'just'
             end
+        end
+    end)
+
+    previewer = previewers.new_buffer_previewer {
+        title = 'Recipe',
+        teardown = function()
+            previews:dispose()
+        end,
+        get_buffer_by_name = function(_, entry)
+            return entry.value
+        end,
+        define_preview = function(self, entry)
+            local lines = previews:get(entry.value) or { 'Loading recipe: ' .. entry.value }
             vim.api.nvim_buf_set_lines(self.state.bufnr, 0, -1, false, lines)
             vim.bo[self.state.bufnr].filetype = 'just'
         end,
     }
+
+    previews:preload()
 
     pickers.new({}, {
         prompt_title = 'Just recipes',
