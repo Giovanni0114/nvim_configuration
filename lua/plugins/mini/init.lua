@@ -9,9 +9,9 @@ return { -- Collection of various small independent plugins/modules
         local statusline = require 'mini.statusline'
         statusline.setup()
 
-        statusline.section_location = function()
-            return (require('copilot').setup_done and ' on ' or '') .. '%p%%'
-        end
+        -- statusline.section_location = function()
+        --     return (require('copilot').setup_done and ' on ' or '') .. '%p%%'
+        -- end
 
         local surround = require('mini.surround')
         surround.setup({
