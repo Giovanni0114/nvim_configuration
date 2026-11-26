@@ -1,0 +1,48 @@
+return {
+
+    "nickjvandyke/opencode.nvim",
+    -- Defaults to "main", supporting OpenCode v2.
+    -- Uncomment to pull the latest stable release, supporting OpenCode v1.
+    -- version = "*",
+    config = function()
+        ---@type opencode.Opts
+        vim.g.opencode_opts = {
+        }
+
+        -- Recommended/example keymaps
+        vim.keymap.set({ "n", "x" }, "<C-a>", function()
+            require("opencode.server.discovery").get()
+                :next(function(server)
+                    local context = require("opencode.context").new(server)
+                    return require("opencode.ui.ask").ask("@this: ", context)
+                        :next(function(input)
+                            local text = context:render(input).output:plaintext()
+                            return server:request("/api/session", "POST", {
+                                location = { directory = vim.fn.getcwd() },
+                            }):next(function(response)
+                                local session = response and response.data
+                                if not session or not session.id then
+                                    return require("opencode.promise").reject("Failed to create OpenCode session")
+                                end
+                                return server:prompt(session.id, text)
+                            end)
+                        end)
+                        :next(function() context:clear() end)
+                        :catch(function(err)
+                            if err then
+                                context:resume()
+                                return require("opencode.promise").reject(err)
+                            end
+                        end)
+                end)
+                :catch(function(err)
+                    if err then vim.notify(err, vim.log.levels.ERROR, { title = "opencode" }) end
+                end)
+        end, { desc = "Ask OpenCode in a new session…" })
+        vim.keymap.set({ "n", "x" }, "<C-x>", function() require("opencode").select() end, { desc = "Select OpenCode…" })
+        vim.keymap.set({ "n", "x" }, "go", function() return require("opencode").operator("@this") end,
+            { desc = "Send range to OpenCode", expr = true })
+        vim.keymap.set({ "n" }, "goo", function() return require("opencode").operator("@this") .. "_" end,
+            { desc = "Send line to OpenCode", expr = true })
+    end,
+}
